@@ -26,7 +26,7 @@ pub fn main_form(cx: Scope) -> Element {
         div { id: "terminal-background",
             table { style: "width:100%; ",
                 tr {
-                    td { "LOGO" }
+                    td { img { id: "logo", src: "/img/Logo.svg" } }
                     td { style: "width:100%" }
                     td { account_balance_widget {} }
                     td {
@@ -58,6 +58,17 @@ pub fn main_form(cx: Scope) -> Element {
                     }
                 }
             }
+        }
+        div { id: "leftPanel",
+            markets_icon {}
+            div { class: "left-panel-label", "Markets" }
+            div { class: "left-panel-separator" }
+            portfolio_icon {}
+            div { class: "left-panel-label", "Portfolio" }
+            div { class: "left-panel-separator" }
+            history_icon {}
+            div { class: "left-panel-label", "History" }
+            div { class: "left-panel-separator" }
         }
         select_account_widget {
             on_account_selected: move |account_id: AccountId| {

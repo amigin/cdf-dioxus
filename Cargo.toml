@@ -10,9 +10,8 @@ dioxus = "*"
 
 dioxus-desktop = "*"
 dioxus-liveview = { varsion = "*", features = ["salvo"] }
-dioxus-html-macro = "*"
 dioxus-ssr = "*"
-dioxus-free-icons = { version = "*", features = ["bootstrap"] }
+dioxus-free-icons = { version = "*", features = ["bootstrap", "ionicons"] }
 tokio = { version = "*", features = ["full"] }
 serde = { version = "*", features = ["derive"] }
 serde_json = "*"
@@ -24,6 +23,7 @@ prost = "*"
 prost-types = "*"
 fermi = "*"
 futures-util = "*"
+base64 = "*"
 
 my-grpc-client-macros = { tag = "0.1.0", git = "https://github.com/MyJetTools/my-grpc-client-macros.git" }
 my-telemetry = { tag = "0.3.0", git = "https://github.com/MyJetTools/my-telemetry.git" }

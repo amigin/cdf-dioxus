@@ -10,6 +10,7 @@ use fermi::{use_atom_ref, use_init_atom_root, AtomRef};
 
 use salvo::affix;
 use salvo::prelude::*;
+use salvo::serve_static::StaticDir;
 
 mod actions;
 mod app;
@@ -62,7 +63,9 @@ async fn main() {
     let router = Router::new()
         .hoop(affix::inject(Arc::new(view)))
         .get(http_server::index)
-        .push(Router::with_path("ws").get(http_server::connect));
+        .push(Router::with_path("ws").get(http_server::connect))
+        .push(Router::with_path("img/<**path>").get(StaticDir::new("./files/img")))
+        .push(Router::with_path("avatar/<**path>").get(http_server::get_avatar));
 
     println!("Listening on http://{}", addr);
 

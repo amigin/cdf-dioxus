@@ -1,5 +1,3 @@
-use std::time::Duration;
-
 use my_grpc_client_macros::generate_grpc_client;
 use my_grpc_extensions::GrpcChannel;
 use my_telemetry::MyTelemetryContext;
@@ -35,8 +33,6 @@ impl AccountsManagerGrpcClient {
                 )
                 .await
                 .unwrap();
-
-            tokio::time::sleep(Duration::from_secs(1)).await;
 
             result
         });

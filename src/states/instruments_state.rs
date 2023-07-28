@@ -2,7 +2,7 @@ use std::{collections::HashMap, sync::Arc};
 
 use my_nosql_contracts::TradingInstrumentNoSqlEntity;
 
-use crate::types::Instrument;
+use crate::types::{Instrument, InstrumentId};
 
 pub struct InstrumentsState {
     pub instruments: HashMap<String, Instrument>,
@@ -22,5 +22,17 @@ impl InstrumentsState {
             self.instruments
                 .insert(itm.get_id().to_string(), itm.as_ref().into());
         }
+    }
+
+    pub fn get_name(&self, id: &InstrumentId) -> String {
+        let instrument = self.instruments.get(id.as_str());
+
+        if instrument.is_none() {
+            return id.to_string();
+        }
+
+        let instrument = instrument.unwrap();
+
+        instrument.name.clone()
     }
 }

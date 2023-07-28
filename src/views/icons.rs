@@ -1,5 +1,6 @@
 use dioxus::prelude::*;
 use dioxus_free_icons::icons::bs_icons::*;
+use dioxus_free_icons::icons::io_icons::*;
 use dioxus_free_icons::*;
 
 pub fn person_icon(cx: Scope) -> Element {
@@ -18,5 +19,37 @@ pub fn add_instrument_icon(cx: Scope) -> Element {
             fill: "var(--label-color)",
             icon: BsPlusSquareDotted
         }
+    })
+}
+
+pub fn markets_icon(cx: Scope) -> Element {
+    cx.render(rsx! {
+        Icon {
+            width: 24,
+            height: 24,
+            fill: "var(--label-color)",
+            icon: IoBarChartOutline
+        }
+    })
+}
+
+pub fn portfolio_icon(cx: Scope) -> Element {
+    cx.render(rsx! {
+        Icon {
+            width: 24,
+            height: 24,
+            fill: "var(--label-color)",
+            icon: IoBriefcaseOutline
+        }
+    })
+}
+
+pub fn history_icon(cx: Scope) -> Element {
+    cx.render(rsx! {Icon {
+        width: 24,
+        height: 24,
+        fill: "var(--label-color)",
+        icon: IoReceiptOutline
+    }
     })
 }

@@ -1,7 +1,7 @@
 use dioxus::prelude::*;
 
 use crate::{
-    states::FavInstrumentsState,
+    states::{FavInstrumentsState, InstrumentsState},
     types::{AccountId, InstrumentId, TraderId},
     views::icons::*,
 };
@@ -17,6 +17,9 @@ pub fn fav_instruments_panel<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element<
 
     let fav_instruments = fav_instruments_state.read();
     let selected = &fav_instruments.get_selected();
+
+    let instruments = use_shared_state::<InstrumentsState>(cx).unwrap().read();
+
     let mut fav_instruments: Vec<_> = fav_instruments
         .get_instruments()
         .iter()
@@ -32,15 +35,19 @@ pub fn fav_instruments_panel<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element<
         table { class: "tech-table",
             tr {
 
-                fav_instruments.into_iter().map(|item| {
+                fav_instruments.into_iter().map(|instrument_id| {
                     no+=1;
 
-                    if let Some(item) = item{
+
+                    if let Some(instrument_id) = instrument_id{
+
+                        let name = instruments.get_name(&instrument_id);
 
                         rsx!{
                             fav_instrument{
-                                name: item.clone(),
-                                selected: item.equals_to(selected),
+                                id: instrument_id.clone(),
+                                name: name,
+                                selected: instrument_id.equals_to(selected),
                                 no: no,
                                 on_click: move |instr_id: InstrumentId| {
                                     save_fav_instrument(&cx, instr_id.clone());
@@ -56,7 +63,7 @@ pub fn fav_instruments_panel<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element<
                         }
                     }else{
                         rsx!{
-                            table{ style:"height: 30px;margin-left: 10px;",
+                            table{ style:"height: 40px;margin-left: 10px;",
                                 tr{
                                     td{
                                         div{ style:"cursor: pointer;",
@@ -78,7 +85,8 @@ pub fn fav_instruments_panel<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element<
 
 #[derive(Props)]
 pub struct FavInstrumentProps<'a> {
-    pub name: InstrumentId,
+    pub id: InstrumentId,
+    pub name: String,
     pub selected: bool,
     pub on_click: EventHandler<'a, InstrumentId>,
     pub on_remove: EventHandler<'a, InstrumentId>,
@@ -93,32 +101,45 @@ fn fav_instrument<'s>(cx: Scope<'s, FavInstrumentProps<'s>>) -> Element<'s> {
     };
     if cx.props.selected {
         return render! {
-            td { div { class: "fav-instrument {first} selected", "{cx.props.name}" } }
+            td {
+                table { class: "fav-instrument {first} selected",
+                    tr {
+                        td { rowspan: 2, render_avatar { id: cx.props.id.as_str().into() } }
+                        td { style: "width: 100%;", "{cx.props.name}" }
+                        td { rowspan: 2,
+                            div { style: "opacity:0", class: "hide_fav_instr", close_icon {} }
+                        }
+                    }
+                    tr { class: "fav-instr-rate", "1.0000" }
+                }
+            }
             td { div { class: "fav-instr-separator" } }
         };
     }
     render! {
         td {
             table {
+                class: "fav-instrument {first}",
+                onclick: move |_| {
+                    cx.props.on_click.call(cx.props.id.clone());
+                },
                 tr {
                     td {
-                        div {
-                            class: "fav-instrument {first}",
-                            onclick: move |_| {
-                                cx.props.on_click.call(cx.props.name.clone());
-                            },
-                            "{cx.props.name.as_str()}"
-                        }
-                    }
-                    td {
-                        td {
-                            div {
-                                class: "hide_fav_instr",
-                                onclick: move |_| {
-                                    cx.props.on_remove.call(cx.props.name.clone());
-                                },
-                                close_icon {}
+                        table {
+                            tr {
+                                td { rowspan: 2, render_avatar { id: cx.props.id.as_str().into() } }
+                                td { style: "width: 100%;", "{cx.props.name.as_str()}" }
+                                td { rowspan: 2,
+                                    div {
+                                        class: "hide_fav_instr",
+                                        onclick: move |_| {
+                                            cx.props.on_remove.call(cx.props.id.clone());
+                                        },
+                                        close_icon {}
+                                    }
+                                }
                             }
+                            tr { tr { class: "fav-instr-rate", "1.0000" } }
                         }
                     }
                 }
@@ -156,4 +177,11 @@ fn save_instruments<'s>(
         )
         .await;
     });
+}
+
+#[inline_props]
+fn render_avatar(cx: Scope, id: String) -> Element {
+    render! {
+        div { class: "instr-avatar", img { src: "/avatar/{id}", style: "width: 32px; height: 32px;" } }
+    }
 }

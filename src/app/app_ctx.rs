@@ -6,11 +6,13 @@ use tokio::sync::RwLock;
 
 use crate::{grpc_client::*, settings_reader::SettingsReader};
 
-pub const APP_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+//pub const APP_VERSION: &'static str = env!("CARGO_PKG_VERSION");
 pub const APP_NAME: &'static str = env!("CARGO_PKG_NAME");
 
 pub struct MyNoSqlReaders {
     pub instruments: Arc<MyNoSqlDataReader<TradingInstrumentNoSqlEntity>>,
+    pub instrument_avatars: Arc<MyNoSqlDataReader<InstrumentAvatarMyNoSqlEntity>>,
+    pub defaults: Arc<MyNoSqlDataReader<DefaultsNoSqlEntity>>,
 }
 
 pub struct AppContextInner {
@@ -36,6 +38,8 @@ impl AppContextInner {
 
         let my_no_sql_readers = MyNoSqlReaders {
             instruments: my_no_sql_tcp_connection.get_reader().await,
+            instrument_avatars: my_no_sql_tcp_connection.get_reader().await,
+            defaults: my_no_sql_tcp_connection.get_reader().await,
         };
 
         let result = Self {
