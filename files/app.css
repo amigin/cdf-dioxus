@@ -1,0 +1,124 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Tahoma', sans-serif;
+    overflow: hidden;
+
+}
+
+#main {
+    overflow: hidden;
+    text-align: center;
+    display: none;
+}
+
+
+.table-layout {
+    width: 100%;
+    height: var(--main-height);
+}
+
+#terminal-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: var(--main-width);
+    height: var(--main-height);
+}
+
+#terminal-pad {
+    position: absolute;
+    width: var(--terminal-width);
+    height: var(--terminal-height);
+    left: var(--terminal-left);
+    top: var(--terminal-top);
+    box-shadow: 0 0 5px lightgray;
+    background-color: #f8f7f7;
+    border-radius: 5px 0 0 0;
+    border-left: 1px solid lightgray;
+    border-top: 1px solid lightgray;
+}
+
+#fav-instruments {
+    text-align: left;
+}
+
+.fav-instrument {
+    padding: 5px;
+    width: 100px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.first-fav-instr {
+    border-radius: 5px 0 5px 5px !important;
+}
+
+.fav-instrument:hover {
+    background-color: #f2f2f2;
+}
+
+#fav-instruments .selected {
+    background-color: white;
+    border-radius: 0 0 5px 5px;
+    box-shadow: 0 0 3px #dedede;
+    border-top: 1px solid #2196F3;
+
+}
+
+
+.fav-instr-separator {
+    width: 1px;
+    background: #e1dede;
+    height: 20px;
+}
+
+.tech-table,
+.tech-table td {
+    padding: 0;
+}
+
+#trading-panel {
+    position: absolute;
+    box-shadow: 0 0 3px lightgray;
+    top: 0;
+    left: var(--trading-panel-left);
+    width: var(--trading-panel-width);
+    height: var(--terminal-height);
+    padding: 3px;
+    text-align: left;
+    background-color: #f8f7f7;
+}
+
+
+#pnl-calc-btn {
+    width: 100%;
+}
+
+#autoClose {
+    width: 100%;
+}
+
+#btnBuy {
+    margin-top: 10px;
+    width: 100%;
+}
+
+#btnSell {
+    margin-top: 10px;
+    width: 100%;
+}
+
+#btnAutoClose {
+    width: 100%;
+
+}
+
+
+#labelSetPurchaseAt {
+    margin-top: 5px;
+}
+
+#btnSetPurchaseAt {
+    width: 100%;
+}
