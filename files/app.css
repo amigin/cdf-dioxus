@@ -1,9 +1,11 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Tahoma', sans-serif;
+    font-family: 'Roboto', sans-serif !important;
     overflow: hidden;
-
+    --label-color: gray;
+    --shadow: 0 0 5px lightgray;
+    --border-color: lightgray;
 }
 
 #main {
@@ -121,4 +123,84 @@ body {
 
 #btnSetPurchaseAt {
     width: 100%;
+}
+
+#balance-widget {
+    text-align: left;
+    margin-right: 30px;
+    padding: 0;
+}
+
+#balance-widget .bottom-line {
+    font-size: 11px;
+}
+
+.acc_type-badge-live {
+    background: white !important;
+    color: var(--bs-green) !important;
+    border: 1px solid var(--bs-green);
+    margin-left: 5px;
+}
+
+.acc_type-badge-demo {
+    margin-left: 5px;
+}
+
+
+#dialogBackground {
+    position: absolute;
+    width: var(--terminal-width);
+    height: var(--terminal-height);
+    left: var(--terminal-left);
+    top: var(--terminal-top);
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 5px 0 0 0;
+    backdrop-filter: blur(10px)
+}
+
+#dialogPad {
+    position: absolute;
+    left: var(--terminal-left);
+    top: var(--terminal-top);
+    width: var(--terminal-width);
+    height: var(--terminal-height);
+    margin-top: 20px;
+}
+
+#selectAccountPanel {
+
+    background: white;
+    box-shadow: var(--shadow);
+    border-radius: 5px;
+
+    width: 900px;
+    margin: auto;
+
+    padding: 5px;
+    border-color: var(--border-color);
+
+    margin-top: 20px;
+}
+
+#selectAccountContent {
+    width: 100%;
+}
+
+#selectAccountContent:last-child {
+    border-bottom: none !important;
+}
+
+.selectAccountId {
+    border-bottom: 1px solid lightgray;
+    color: var(--label-color);
+    font-size: 12px;
+}
+
+.selectAccountId:last-child {
+    border-bottom: none;
+}
+
+.hide_fav_instr {
+    cursor: pointer;
+    margin-right: 5px;
 }

@@ -43,9 +43,3 @@ impl GlobalState {
         }
     }
 }
-
-impl Drop for GlobalState {
-    fn drop(&mut self) {
-        println!("GlobalState dropped");
-    }
-}

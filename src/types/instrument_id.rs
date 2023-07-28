@@ -14,6 +14,10 @@ impl InstrumentId {
         self.0.clone()
     }
 
+    pub fn into_string(self) -> String {
+        self.0
+    }
+
     pub fn equals_to(&self, other: &Self) -> bool {
         self.0 == other.0
     }

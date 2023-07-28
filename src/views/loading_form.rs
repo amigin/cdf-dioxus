@@ -1,6 +1,10 @@
 use dioxus::prelude::*;
+use my_nosql_contracts::TradingInstrumentNoSqlEntity;
 
-use crate::states::{AccountsState, FavInstrumentsState, GlobalState};
+use crate::{
+    states::{AccountsState, FavInstrumentsState, GlobalState, InstrumentsState},
+    APP_CTX,
+};
 pub fn loading_form(cx: Scope) -> Element {
     let global_state = use_shared_state::<GlobalState>(cx).unwrap().to_owned();
 
@@ -10,45 +14,57 @@ pub fn loading_form(cx: Scope) -> Element {
         .unwrap()
         .to_owned();
 
+    let instruments_state = use_shared_state::<InstrumentsState>(cx).unwrap().to_owned();
+
     let trader_id = global_state.read().get_trader_id().clone();
     cx.spawn(async move {
         let accounts =
             crate::grpc_client::AccountsManagerGrpcClient::get_list_of_accounts(trader_id.clone())
                 .await;
 
-        let selected_account = accounts[0].account_id.clone();
+        let selected_account_id_from_key_value =
+            crate::grpc_client::KeyValueGrpcClient::get_selected_account_id(trader_id.clone())
+                .await;
 
-        accounts_state
-            .write()
-            .set_accounts(selected_account.clone(), accounts);
+        let mut selected_account_id = accounts[0].account_id.clone();
 
-        let fav_instruments =
-            crate::grpc_client::FavoriteInstrumentsGrpcClient::get_fav_instruments(
-                trader_id.clone(),
-                selected_account.clone(),
-                crate::types::WebOrMobile::Web,
-            )
-            .await;
-
-        let instrument_id = crate::grpc_client::KeyValueGrpcClient::get_fav_instrument(
-            trader_id,
-            selected_account.clone(),
-        )
-        .await;
-
-        if let Some(instrument_id) = instrument_id {
-            fav_instruments_state.write().selected = instrument_id;
-        } else {
-            if fav_instruments.len() > 0 {
-                fav_instruments_state.write().selected = fav_instruments.get(0).unwrap().clone();
+        if let Some(selected_account_id_from_key_value) = selected_account_id_from_key_value {
+            for itm in &accounts {
+                if itm.account_id == selected_account_id {
+                    selected_account_id = selected_account_id_from_key_value;
+                    break;
+                }
             }
         }
 
-        fav_instruments_state.write().instruments = fav_instruments;
+        accounts_state
+            .write()
+            .set_accounts(selected_account_id.clone(), accounts);
+
+        crate::actions::select_account(&trader_id, &selected_account_id, &fav_instruments_state)
+            .await;
+        let my_no_sql_readers = APP_CTX.get_my_no_sql_readers().await;
+
+        let instruments = my_no_sql_readers
+            .instruments
+            .get_by_partition_key_as_vec(TradingInstrumentNoSqlEntity::generate_partition_key())
+            .await;
+
+        if let Some(instruments) = instruments {
+            instruments_state.write().set_instruments(instruments);
+        }
 
         global_state.write().set_authenticated();
     });
 
     //todo!("Implement working design")
-    render! { h1 { "Loading..." } }
+    render! {
+        table { style: "width:100%; height:100%;",
+            tr {
+                td {
+                    div { class: "spinner-border", role: "status", span { class: "visually-hidden", "Loading..." } }
+                }
+            }
+        }
+    }
 }

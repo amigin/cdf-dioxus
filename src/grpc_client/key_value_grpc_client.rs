@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 use crate::{
     types::{AccountId, InstrumentId, TraderId},
     APP_CTX,
@@ -16,16 +18,13 @@ pub struct KeyValueGrpcClient {
 }
 
 impl KeyValueGrpcClient {
-    pub async fn get_fav_instrument(
-        trader_id: TraderId,
-        account_id: AccountId,
-    ) -> Option<InstrumentId> {
+    async fn get_key(client_id: String, key: String) -> Option<String> {
         let result = tokio::spawn(async move {
             let app_ctx = APP_CTX.get().await;
 
             let req = GetKeyValueGrpcRequestModel {
-                client_id: trader_id.into(),
-                key: compile_key(&account_id),
+                client_id: client_id,
+                key: key,
             };
 
             let result = app_ctx
@@ -38,9 +37,7 @@ impl KeyValueGrpcClient {
                 Some(mut result) => {
                     if result.len() > 0 {
                         let result = result.remove(0);
-                        if let Some(value) = result.value {
-                            return Some(InstrumentId::new(value));
-                        }
+                        return result.value;
                     }
                 }
                 None => {
@@ -49,36 +46,84 @@ impl KeyValueGrpcClient {
             }
 
             None
-
-            /*
-            let key = compile_key(&account_id);
-
-
-            let result = app_ctx
-                .key_value_grpc_client
-                .get_all_by_user(
-                    GetAllByUserGrpcRequestModel {
-                        client_id: trader_id.into(),
-                    },
-                    &my_telemetry::MyTelemetryContext::new(),
-                )
-                .await
-                .unwrap();
-
-            if let Some(result) = result {
-                for itm in result {
-                    if itm.key == key {
-                        return itm.value;
-                    }
-                }
-                None
-            } else {
-                None
-            } */
         })
-        .await
-        .unwrap();
+        .await;
 
+        match result {
+            Ok(result) => result,
+            Err(_) => None,
+        }
+    }
+
+    /*
+       async fn get_keys(client_id: String, keys: Vec<String>) -> Option<HashMap<String, String>> {
+           let result = tokio::spawn(async move {
+               let app_ctx = APP_CTX.get().await;
+
+               let mut req = Vec::with_capacity(keys.len());
+
+               for key in &keys {
+                   let model = GetKeyValueGrpcRequestModel {
+                       client_id: client_id.to_string(),
+                       key: key.clone(),
+                   };
+                   req.push(model);
+               }
+
+               let response = app_ctx
+                   .key_value_grpc_client
+                   .get(req, &my_telemetry::MyTelemetryContext::new())
+                   .await
+                   .unwrap();
+
+               if response.is_none() {
+                   return None;
+               }
+
+               let response = response.unwrap();
+
+               let mut result = HashMap::new();
+
+               for itm in response {
+                   if let Some(value) = itm.value {
+                       result.insert(itm.key, value);
+                   }
+               }
+
+               Some(result)
+           })
+           .await;
+
+           match result {
+               Ok(result) => result,
+               Err(_) => None,
+           }
+       }
+    */
+    async fn save_key(client_id: String, key: String, value: String) {
+        let _ = tokio::spawn(async move {
+            let app_ctx = APP_CTX.get().await;
+
+            let req = SetKeyValueGrpcRequestModel {
+                client_id,
+                key,
+                value,
+            };
+
+            app_ctx
+                .key_value_grpc_client
+                .set(vec![req], &my_telemetry::MyTelemetryContext::new())
+                .await
+                .unwrap()
+        })
+        .await;
+    }
+
+    pub async fn get_fav_instrument(
+        trader_id: TraderId,
+        account_id: AccountId,
+    ) -> Option<InstrumentId> {
+        let result = Self::get_key(trader_id.into(), compile_fav_instrument_key(&account_id)).await;
         match result {
             Some(itm) => {
                 return Some(itm.into());
@@ -92,26 +137,49 @@ impl KeyValueGrpcClient {
         account_id: AccountId,
         instrument_id: InstrumentId,
     ) {
-        tokio::spawn(async move {
-            let app_ctx = APP_CTX.get().await;
+        Self::save_key(
+            trader_id.into(),
+            compile_fav_instrument_key(&account_id),
+            instrument_id.into(),
+        )
+        .await;
+    }
 
-            let req = SetKeyValueGrpcRequestModel {
-                client_id: trader_id.into(),
-                key: compile_key(&account_id),
-                value: instrument_id.into(),
-            };
+    pub async fn get_selected_instrument(
+        trader_id: TraderId,
+        account_id: AccountId,
+    ) -> Option<InstrumentId> {
+        let result = Self::get_key(trader_id.into(), compile_fav_instrument_key(&account_id)).await;
+        match result {
+            Some(itm) => {
+                return Some(itm.into());
+            }
+            None => None,
+        }
+    }
 
-            app_ctx
-                .key_value_grpc_client
-                .set(vec![req], &my_telemetry::MyTelemetryContext::new())
-                .await
-                .unwrap()
-        })
-        .await
-        .unwrap();
+    pub async fn get_selected_account_id(trader_id: TraderId) -> Option<AccountId> {
+        let result = Self::get_key(trader_id.into(), KEY_SELECTED_ACCOUNT.to_string()).await;
+        match result {
+            Some(itm) => {
+                return Some(itm.into());
+            }
+            None => None,
+        }
+    }
+
+    pub async fn save_selected_account_id(trader_id: TraderId, account_id: AccountId) {
+        Self::save_key(
+            trader_id.into(),
+            KEY_SELECTED_ACCOUNT.to_string(),
+            account_id.into(),
+        )
+        .await;
     }
 }
 
-fn compile_key(account_id: &AccountId) -> String {
+fn compile_fav_instrument_key(account_id: &AccountId) -> String {
     format!("fav-instr-{}", account_id)
 }
+
+const KEY_SELECTED_ACCOUNT: &str = "selected-account";

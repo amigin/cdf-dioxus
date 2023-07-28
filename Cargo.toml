@@ -10,7 +10,9 @@ dioxus = "*"
 
 dioxus-desktop = "*"
 dioxus-liveview = { varsion = "*", features = ["salvo"] }
+dioxus-html-macro = "*"
 dioxus-ssr = "*"
+dioxus-free-icons = { version = "*", features = ["bootstrap"] }
 tokio = { version = "*", features = ["full"] }
 serde = { version = "*", features = ["derive"] }
 serde_json = "*"
@@ -31,6 +33,12 @@ my-settings-reader = { tag = "0.1.5", git = "https://github.com/MyJetTools/my-se
     "background-reader",
 ] }
 flurl = { tag = "0.4.0", git = "https://github.com/MyJetTools/fl-url.git" }
+
+my-no-sql-server-abstractions = { tag = "0.1.1", git = "https://github.com/MyJetTools/my-no-sql-server-abstractions.git" }
+my-no-sql-tcp-reader = { tag = "0.2.0", git = "https://github.com/MyJetTools/my-no-sql-tcp-reader.git" }
+my-nosql-contracts = { tag = "0.1.16", git = "https://github.com/my-cfd-platform/my-nosql-contracts.git" }
+my-logger = { tag = "0.2.1", git = "https://github.com/MyJetTools/my-logger.git" }
+
 
 salvo = { version = "0.37.9", features = ["full", "affix", "ws"] }
 once_cell = "*"

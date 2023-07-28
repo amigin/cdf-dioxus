@@ -11,6 +11,7 @@ use fermi::{use_atom_ref, use_init_atom_root, AtomRef};
 use salvo::affix;
 use salvo::prelude::*;
 
+mod actions;
 mod app;
 mod grpc_client;
 mod http_server;
@@ -74,8 +75,12 @@ fn app(cx: Scope) -> Element {
         trader_id: "2808ee4d-4231-4697-b892-eb95741c811c".into(),
     });
 
+    //use_shared_state_provider(cx, || GlobalState::NonAuthenticated);
+
     use_shared_state_provider(cx, || AccountsState::new());
     use_shared_state_provider(cx, || FavInstrumentsState::new());
+
+    use_shared_state_provider(cx, || InstrumentsState::new());
 
     use_init_atom_root(&cx);
 

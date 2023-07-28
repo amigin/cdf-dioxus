@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use my_grpc_client_macros::generate_grpc_client;
 use my_grpc_extensions::GrpcChannel;
 use my_telemetry::MyTelemetryContext;
@@ -34,6 +36,8 @@ impl AccountsManagerGrpcClient {
                 .await
                 .unwrap();
 
+            tokio::time::sleep(Duration::from_secs(1)).await;
+
             result
         });
 
@@ -43,6 +47,9 @@ impl AccountsManagerGrpcClient {
                 .map(|account| TraderAccount {
                     account_id: account.id.into(),
                     currency: account.currency.into(),
+                    balance: account.balance.into(),
+                    is_live: true,                              //todo!("Plug demo"),
+                    trading_disabled: account.trading_disabled, //todo!("Plug trading_disabled"),
                 })
                 .collect(),
             None => {

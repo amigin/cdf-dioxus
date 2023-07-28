@@ -5,6 +5,7 @@ lazy_static::lazy_static! {
         forgot_password: "Forgot Password?".to_string(),
         sign_up: "Sign Up".to_string(),
         login_failed: "Login failed".to_string(),
+        total: "Total".to_string(),
     };
 }
 
@@ -14,4 +15,5 @@ pub struct Language {
     pub forgot_password: String,
     pub sign_up: String,
     pub login_failed: String,
+    pub total: String, // At the header of the account balance widget
 }

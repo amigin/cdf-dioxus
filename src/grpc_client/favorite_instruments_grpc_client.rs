@@ -3,7 +3,7 @@ use my_grpc_extensions::GrpcChannel;
 use my_telemetry::MyTelemetryContext;
 
 use crate::{
-    types::{AccountId, InstrumentId, TraderId, WebOrMobile},
+    types::{AccountId, InstrumentId, TraderId},
     APP_CTX,
 };
 
@@ -23,7 +23,6 @@ impl FavoriteInstrumentsGrpcClient {
     pub async fn get_fav_instruments(
         trader_id: TraderId,
         account_id: AccountId,
-        web_or_mobile: WebOrMobile,
     ) -> Vec<InstrumentId> {
         let result = tokio::spawn(async move {
             let app_ctx: std::sync::Arc<crate::app::AppContextInner> = APP_CTX.get().await;
@@ -33,7 +32,7 @@ impl FavoriteInstrumentsGrpcClient {
                     GetFavoriteInstrumentsRequestModel {
                         trader_id: trader_id.into(),
                         account_id: account_id.into(),
-                        web_or_mobile: web_or_mobile.to_i32(),
+                        web_or_mobile: 0,
                     },
                     &MyTelemetryContext::new(),
                 )
@@ -50,5 +49,35 @@ impl FavoriteInstrumentsGrpcClient {
             .into_iter()
             .map(|itm| itm.into())
             .collect()
+    }
+
+    pub async fn save_fav_instruments(
+        trader_id: TraderId,
+        account_id: AccountId,
+        instruments: Vec<InstrumentId>,
+    ) {
+        tokio::spawn(async move {
+            let app_ctx: std::sync::Arc<crate::app::AppContextInner> = APP_CTX.get().await;
+
+            let mut result = Vec::with_capacity(instruments.len());
+
+            for itm in instruments {
+                result.push(itm.into_string())
+            }
+
+            let req = SetFavoriteInstrumentsRequestModel {
+                trader_id: trader_id.into(),
+                account_id: account_id.into(),
+                web_or_mobile: 0,
+                instruments: result,
+            };
+
+            let _ = app_ctx
+                .fav_instruments_grpc_client
+                .set(req, &MyTelemetryContext::new())
+                .await;
+        })
+        .await
+        .unwrap();
     }
 }
