@@ -1,11 +1,13 @@
 pub struct MainFormState {
     pub show_select_account: bool,
+    pub sync_thread_is_on: bool,
 }
 
 impl MainFormState {
     pub fn new() -> Self {
         Self {
             show_select_account: false,
+            sync_thread_is_on: false,
         }
     }
 

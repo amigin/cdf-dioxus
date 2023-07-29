@@ -1,9 +1,8 @@
 use dioxus::prelude::*;
 
 use crate::{
-    states::{FavInstrumentsState, InstrumentsState},
+    states::*,
     types::{AccountId, InstrumentId, TraderId},
-    view_models::*,
     views::widgets::faw_instruments::render_instrument,
 };
 
@@ -16,8 +15,6 @@ pub struct FavInstrumentsProps {
 }
 
 pub fn fav_instruments_widget<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element<'s> {
-    use_shared_state_provider(cx, || SelectInstrumentViewModel::new());
-
     let fav_instruments_state = use_shared_state::<FavInstrumentsState>(cx).unwrap();
 
     let fav_instruments = fav_instruments_state.read();
@@ -46,7 +43,16 @@ pub fn fav_instruments_widget<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element
 
                     if let Some(instrument_id) = instrument_id{
 
-                        let name = instruments.get_name(&instrument_id);
+                        let instrument = instruments.get(instrument_id);
+
+
+                        let name = if let Some(instrument) = instrument {
+                            instrument.name.clone()
+                        } else {
+                            instrument_id.to_string()
+                        };
+
+
 
                         rsx!{
                             render_instrument{

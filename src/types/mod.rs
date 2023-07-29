@@ -16,3 +16,5 @@ mod balance;
 pub use balance::*;
 mod instrument;
 pub use instrument::*;
+mod bid_ask;
+pub use bid_ask::*;

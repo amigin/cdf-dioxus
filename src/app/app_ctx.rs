@@ -13,6 +13,7 @@ pub struct MyNoSqlReaders {
     pub instruments: Arc<MyNoSqlDataReader<TradingInstrumentNoSqlEntity>>,
     pub instrument_avatars: Arc<MyNoSqlDataReader<InstrumentAvatarMyNoSqlEntity>>,
     pub defaults: Arc<MyNoSqlDataReader<DefaultsNoSqlEntity>>,
+    pub bid_ask: Arc<MyNoSqlDataReader<BidAskSnapshotNoSqlEntity>>,
 }
 
 pub struct AppContextInner {
@@ -40,6 +41,7 @@ impl AppContextInner {
             instruments: my_no_sql_tcp_connection.get_reader().await,
             instrument_avatars: my_no_sql_tcp_connection.get_reader().await,
             defaults: my_no_sql_tcp_connection.get_reader().await,
+            bid_ask: my_no_sql_tcp_connection.get_reader().await,
         };
 
         let result = Self {

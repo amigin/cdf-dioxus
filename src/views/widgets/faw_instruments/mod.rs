@@ -8,3 +8,5 @@ mod render_instrument;
 use render_instrument::*;
 mod render_avatar;
 pub use render_avatar::*;
+mod render_rate;
+pub use render_rate::*;

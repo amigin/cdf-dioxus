@@ -2,7 +2,10 @@ use dioxus::prelude::*;
 
 use crate::{
     types::*,
-    views::{icons::*, widgets::faw_instruments::render_avatar},
+    views::{
+        icons::*,
+        widgets::faw_instruments::{render_avatar, render_rate},
+    },
 };
 
 #[derive(Props)]
@@ -32,7 +35,7 @@ pub fn render_instrument<'s>(cx: Scope<'s, FavInstrumentProps<'s>>) -> Element<'
                             div { style: "opacity:0", class: "hide_fav_instr", close_icon {} }
                         }
                     }
-                    tr { class: "fav-instr-rate", "1.0000" }
+                    tr { class: "fav-instr-rate", render_rate { instrument_id: cx.props.id.clone() } }
                 }
             }
             td { div { class: "fav-instr-separator" } }
@@ -61,7 +64,9 @@ pub fn render_instrument<'s>(cx: Scope<'s, FavInstrumentProps<'s>>) -> Element<'
                                     }
                                 }
                             }
-                            tr { tr { class: "fav-instr-rate", "1.0000" } }
+                            tr {
+                                tr { class: "fav-instr-rate", render_rate { instrument_id: cx.props.id.clone() } }
+                            }
                         }
                     }
                 }

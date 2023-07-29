@@ -1,7 +1,11 @@
 use crate::{
     states::*,
+    types::*,
     view_models::*,
-    views::{icons::*, widgets::faw_instruments::render_avatar},
+    views::{
+        icons::*,
+        widgets::faw_instruments::{render_avatar, render_rate},
+    },
 };
 use dioxus::prelude::*;
 
@@ -41,6 +45,7 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                 div { class: "search-icon", instrument_search_icon {} }
                 div { class: "input-group input-group-sm",
                     input {
+                        id: "selectInstrument",
                         class: "form-control, edit-underline",
                         oninput: |e| {
                             filter.set(e.value.clone());
@@ -63,12 +68,14 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
 
                     let id_on_click = id.clone();
 
+
                     rsx!{
                         div {
                             class: "select-instrument",
                             onclick: move |_| {
-                                fav_instruments.write().add(id_on_click.clone().into());
+                                let instr = fav_instruments.write().add(id_on_click.clone().into());
                                 select_instrument_view_model.write().show = false;
+                                save_instruments(cx, instr);
                             },
                             div{class: "instrument-item instrument-avatar",
                                 render_avatar{id: id.clone()}
@@ -79,8 +86,8 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                                   div{ class:"instrument-id",  id}
                                 }
                             }
-                            div{class: "instrument-item instrument-rate",
-
+                            div{class: "instrument-item instrument-rate fav-instr-rate",
+                                render_rate{instrument_id: instrument.instrument_id.clone()},
                             }
 
                         }
@@ -88,5 +95,29 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                 })
             }
         }
+        script { "set_focus('selectInstrument')" }
     }
+}
+
+fn save_instruments(cx: &Scoped, fav_instruments: Vec<InstrumentId>) {
+    let trader_id = use_shared_state::<GlobalState>(cx)
+        .unwrap()
+        .read()
+        .get_trader_id()
+        .clone();
+
+    let account_id = use_shared_state::<AccountsState>(cx)
+        .unwrap()
+        .read()
+        .get_selected_account_id()
+        .clone();
+
+    cx.spawn(async move {
+        crate::grpc_client::FavoriteInstrumentsGrpcClient::save_fav_instruments(
+            trader_id,
+            account_id,
+            fav_instruments,
+        )
+        .await;
+    });
 }

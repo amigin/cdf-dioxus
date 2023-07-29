@@ -35,4 +35,7 @@ impl InstrumentsState {
 
         instrument.name.clone()
     }
+    pub fn get(&self, id: &InstrumentId) -> Option<&Instrument> {
+        self.instruments.get(id.as_str())
+    }
 }

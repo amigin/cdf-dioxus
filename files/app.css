@@ -284,6 +284,7 @@ body {
 }
 
 
+
 .select-instrument {
     display: flex;
     cursor: pointer;
@@ -293,6 +294,10 @@ body {
 .select-instrument .instrument-item {
     display: flex;
     align-items: center;
+}
+
+.select-instrument .instrument-name {
+    width: 180px;
 }
 
 .instrument-id {

@@ -29,5 +29,15 @@ function resize() {
     el.style.setProperty('height', winHeight + "px");
 }
 
+
+function set_focus(id) {
+    setTimeout(function () {
+        console.log("set focus: " + id);
+        let el = document.getElementById(id);
+        el.focus();
+        el.select();
+
+    }, 100);
+}
 addEventListener("resize", resize);
 setTimeout(resize, 100);

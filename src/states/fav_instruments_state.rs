@@ -37,12 +37,13 @@ impl FavInstrumentsState {
         &self.selected
     }
 
-    pub fn add(&mut self, instrument_id: InstrumentId) {
+    pub fn add(&mut self, instrument_id: InstrumentId) -> Vec<InstrumentId> {
         if self.check_if_instrument_exists(&instrument_id) {
-            return;
+            return self.instruments.clone();
         }
 
         self.instruments.push(instrument_id);
+        self.instruments.clone()
     }
 
     pub fn get_instruments(&self) -> &[InstrumentId] {
