@@ -69,14 +69,12 @@ impl AppContextInner {
 
 pub struct AppContext {
     pub inner: RwLock<Option<Arc<AppContextInner>>>,
-    my_no_sql_readers: Option<MyNoSqlReaders>,
 }
 
 impl AppContext {
     pub fn new() -> Self {
         Self {
             inner: RwLock::new(None),
-            my_no_sql_readers: None,
         }
     }
 

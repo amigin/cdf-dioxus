@@ -1,19 +1,18 @@
 use crate::{
-    view_models::*,
+    states::MainFormState,
     views::{icons::*, widgets::faw_instruments::select_instrument_widget},
 };
 use dioxus::prelude::*;
 
 pub fn render_add_button(cx: Scope) -> Element {
-    let select_instrument_view_model = use_shared_state::<SelectInstrumentViewModel>(cx).unwrap();
+    let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
 
-    if select_instrument_view_model.read().show {
+    if main_form_state.read().select_instrument_is_shown() {
         render! {
             table { style: "height: 40px;margin-left: 10px;",
                 tr {
                     td {
                         div { style: "cursor: pointer; margin-left: 50px;", add_instrument_icon {} }
-
                         select_instrument_widget {}
                     }
                 }
@@ -27,7 +26,7 @@ pub fn render_add_button(cx: Scope) -> Element {
                         div {
                             style: "cursor: pointer;",
                             onclick: move |_| {
-                                select_instrument_view_model.write().show = true;
+                                main_form_state.write().show_select_instrument();
                             },
                             add_instrument_icon {}
                         }

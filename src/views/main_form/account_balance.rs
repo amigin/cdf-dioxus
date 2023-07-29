@@ -2,7 +2,7 @@ use dioxus::prelude::*;
 
 use crate::{lang::LANG, states::*, widgets::*};
 
-pub fn account_balance_widget(cx: Scope) -> Element {
+pub fn account_balance(cx: Scope) -> Element {
     let accounts_state = use_shared_state::<AccountsState>(cx).unwrap();
 
     let (currency, balance, is_live) = {
@@ -26,7 +26,7 @@ pub fn account_balance_widget(cx: Scope) -> Element {
             class: "btn dropdown-toggle",
 
             onclick: move |_| {
-                main_form_state.write().show_dialog_account();
+                main_form_state.write().show_select_account();
             },
             div { style: "display:inline-block",
                 div { style: "font-size: 14px;",

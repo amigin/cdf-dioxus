@@ -16,13 +16,13 @@ pub fn select_account_widget<'s>(cx: Scope<'s, SelectAccountsProps<'s>>) -> Elem
 
     let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
 
-    let account_state = main_form_state.read().has_dialog_pad();
+    let select_account_is_shown = main_form_state.read().select_account_is_shown();
 
     let accounts = accounts.read();
     let selected_account = accounts.get_selected_account();
     let accounts = accounts.get_accounts();
 
-    if account_state {
+    if select_account_is_shown {
         render! {
             div {
                 id: "dialogBackground",

@@ -1,7 +1,6 @@
 use crate::{
     states::*,
     types::*,
-    view_models::*,
     views::{
         icons::*,
         widgets::faw_instruments::{render_avatar, render_rate},
@@ -10,7 +9,7 @@ use crate::{
 use dioxus::prelude::*;
 
 pub fn select_instrument_widget(cx: Scope) -> Element {
-    let select_instrument_view_model = use_shared_state::<SelectInstrumentViewModel>(cx).unwrap();
+    let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
 
     let filter = use_state(cx, || "".to_string());
 
@@ -40,7 +39,7 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
     }
 
     render! {
-        div { id: "selectInstrumentModal",
+        div { id: "selectInstrumentModal", class: "floating-menu",
             div { id: "selectInstrumentSearchPanel",
                 div { class: "search-icon", instrument_search_icon {} }
                 div { class: "input-group input-group-sm",
@@ -55,7 +54,7 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                 div {
                     class: "close-icon",
                     onclick: move |_| {
-                        select_instrument_view_model.write().show = false;
+                        main_form_state.write().show_select_instrument();
                     },
                     close_icon {}
                 }
@@ -74,7 +73,7 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                             class: "select-instrument",
                             onclick: move |_| {
                                 let instr = fav_instruments.write().add(id_on_click.clone().into());
-                                select_instrument_view_model.write().show = false;
+                                main_form_state.write().hide_dialog();
                                 save_instruments(cx, instr);
                             },
                             div{class: "instrument-item instrument-avatar",

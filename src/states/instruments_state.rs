@@ -24,17 +24,6 @@ impl InstrumentsState {
         }
     }
 
-    pub fn get_name(&self, id: &InstrumentId) -> String {
-        let instrument = self.instruments.get(id.as_str());
-
-        if instrument.is_none() {
-            return id.to_string();
-        }
-
-        let instrument = instrument.unwrap();
-
-        instrument.name.clone()
-    }
     pub fn get(&self, id: &InstrumentId) -> Option<&Instrument> {
         self.instruments.get(id.as_str())
     }

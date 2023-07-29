@@ -1,11 +1,10 @@
 use crate::states::*;
 use crate::types::*;
-use crate::view_models::SelectInstrumentViewModel;
 use crate::views::widgets::faw_instruments::fav_instruments_widget;
 
-use super::widgets::*;
 use super::*;
 use crate::views::icons::*;
+use crate::views::widgets::*;
 
 use dioxus::prelude::*;
 
@@ -13,8 +12,6 @@ pub fn main_form(cx: Scope) -> Element {
     use_shared_state_provider(cx, || MainFormState::new());
 
     use_shared_state_provider(cx, || BidAskSnapshotState::new());
-
-    use_shared_state_provider(cx, || SelectInstrumentViewModel::new());
 
     let trader_id = {
         let global_state = use_shared_state::<GlobalState>(cx).unwrap();
@@ -35,21 +32,11 @@ pub fn main_form(cx: Scope) -> Element {
                 tr {
                     td { img { id: "logo", src: "/img/Logo.svg" } }
                     td { style: "width:100%" }
-                    td { account_balance_widget {} }
+                    td { account_balance {} }
                     td {
                         div { style: "margin-right: 6px;", button { class: "btn btn-success btn-sm", "Deposit" } }
                     }
-                    td {
-                        div { style: " margin-right: 6px;",
-                            button { class: "btn btn-outline-dark btn-sm dropdown-toggle",
-
-                                span {
-                                    person_icon {}
-                                    "Profile"
-                                }
-                            }
-                        }
-                    }
+                    td { profile_button {} }
                 }
             }
             div { id: "terminal-pad",

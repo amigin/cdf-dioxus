@@ -239,14 +239,8 @@ body {
 
 #selectInstrumentModal {
     width: 320px;
-    position: absolute;
     border: 1px solid lightgray;
     margin-top: -23px;
-    background: var(--transparent-color);
-    border-radius: 5px;
-    z-index: 10;
-    box-shadow: 0 0 5px lightgray;
-
 }
 
 #selectInstrumentSearchPanel {
@@ -316,4 +310,28 @@ body {
 
 .edit-underline:focus {
     outline: none;
+}
+
+.floating-menu {
+    position: absolute;
+    background: var(--transparent-color);
+    border-radius: 5px;
+    z-index: 10;
+    box-shadow: 0 0 5px lightgray;
+}
+
+#profile-menu {
+    top: 0;
+    right: 0;
+    width: 300px;
+    margin-top: 45px;
+    margin-right: 4px;
+    text-align: left;
+    padding: 20px;
+}
+
+#profile-menu .dropdown-item {
+    font-size: 14px;
+    padding: 5px;
+    cursor: pointer;
 }

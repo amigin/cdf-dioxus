@@ -3,9 +3,6 @@ pub use login_form::*;
 mod main_form;
 pub use main_form::*;
 
-mod trading_panel;
-pub use trading_panel::*;
-
 mod loading_form;
 pub use loading_form::*;
 mod sign_up_form;
