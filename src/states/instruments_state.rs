@@ -1,17 +1,17 @@
-use std::{collections::HashMap, sync::Arc};
+use std::{collections::BTreeMap, sync::Arc};
 
 use my_nosql_contracts::TradingInstrumentNoSqlEntity;
 
 use crate::types::{Instrument, InstrumentId};
 
 pub struct InstrumentsState {
-    pub instruments: HashMap<String, Instrument>,
+    pub instruments: BTreeMap<String, Instrument>,
 }
 
 impl InstrumentsState {
     pub fn new() -> Self {
         Self {
-            instruments: HashMap::new(),
+            instruments: BTreeMap::new(),
         }
     }
 

@@ -37,6 +37,14 @@ impl FavInstrumentsState {
         &self.selected
     }
 
+    pub fn add(&mut self, instrument_id: InstrumentId) {
+        if self.check_if_instrument_exists(&instrument_id) {
+            return;
+        }
+
+        self.instruments.push(instrument_id);
+    }
+
     pub fn get_instruments(&self) -> &[InstrumentId] {
         &self.instruments
     }

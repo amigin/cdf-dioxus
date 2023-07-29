@@ -21,6 +21,7 @@ mod settings_reader;
 mod states;
 mod static_resources;
 mod types;
+mod view_models;
 mod views;
 
 lazy_static::lazy_static! {

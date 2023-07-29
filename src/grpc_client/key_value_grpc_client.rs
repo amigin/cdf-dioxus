@@ -132,7 +132,7 @@ impl KeyValueGrpcClient {
         }
     }
 
-    pub async fn save_fav_instrument(
+    pub async fn save_selected_fav_instrument(
         trader_id: TraderId,
         account_id: AccountId,
         instrument_id: InstrumentId,

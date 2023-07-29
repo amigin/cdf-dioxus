@@ -29,7 +29,7 @@ pub fn get_html(addr: SocketAddr) -> String {
         r#"
             <!DOCTYPE html>
             <html>
-                <head> <title>My test</title> {header_content} </head>
+                <head> <title>CFD web terminal</title> {header_content} </head>
                 <body> <div id="main" style="--terminal-left-offset: 60;--terminal-top-offset: 48;"></div> </body>
                 {glue}
             </html>

@@ -2,6 +2,7 @@ use my_nosql_contracts::TradingInstrumentNoSqlEntity;
 
 use super::InstrumentId;
 
+#[derive(Clone)]
 pub struct Instrument {
     pub instrument_id: InstrumentId,
     pub name: String,

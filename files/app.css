@@ -6,6 +6,7 @@ body {
     --label-color: gray;
     --shadow: 0 0 5px lightgray;
     --border-color: lightgray;
+    --transparent-color: #fffffff5;
 }
 
 #main {
@@ -41,11 +42,11 @@ body {
     height: var(--terminal-height);
     left: var(--terminal-left);
     top: var(--terminal-top);
-    box-shadow: 0 0 5px lightgray;
+    box-shadow: 0 0 25px lightgray;
     background-color: #f8f7f7;
     border-radius: 5px 0 0 0;
-    border-left: 1px solid lightgray;
-    border-top: 1px solid lightgray;
+    border-left: 1px solid #ababab;
+    border-top: 1px solid #ababab;
 }
 
 #fav-instruments {
@@ -234,4 +235,80 @@ body {
     color: var(--label-color);
     font-size: 12px;
 
+}
+
+#selectInstrumentModal {
+    width: 320px;
+    position: absolute;
+    border: 1px solid lightgray;
+    margin-top: -23px;
+    background: var(--transparent-color);
+    border-radius: 5px;
+    z-index: 10;
+    box-shadow: 0 0 5px lightgray;
+
+}
+
+#selectInstrumentSearchPanel {
+    display: flex;
+    flex: 16px 1 16px;
+    align-items: center;
+}
+
+#selectInstrumentSearchPanel .search-icon {
+    display: flex;
+
+    padding-left: 5px;
+    padding-right: 5px;
+
+}
+
+#selectInstrumentSearchPanel .close-icon {
+    display: flex;
+
+    padding-left: 5px;
+    padding-right: 5px;
+    cursor: pointer;
+}
+
+#selectInstrumentSearchPanel>* {
+    display: flex;
+}
+
+#selectInstrumentList {
+    height: 350px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+
+.select-instrument {
+    display: flex;
+    cursor: pointer;
+    border-bottom: 1px solid lightgray;
+}
+
+.select-instrument .instrument-item {
+    display: flex;
+    align-items: center;
+}
+
+.instrument-id {
+    font-size: 10px;
+    color: var(--label-color);
+}
+
+.edit-underline {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-radius: 0;
+    width: 100%;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.edit-underline:focus {
+    outline: none;
 }

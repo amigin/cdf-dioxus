@@ -1,0 +1,10 @@
+mod fav_instruments_widget;
+pub use fav_instruments_widget::*;
+mod select_instrument_widget;
+pub use select_instrument_widget::*;
+mod render_add_button;
+use render_add_button::*;
+mod render_instrument;
+use render_instrument::*;
+mod render_avatar;
+pub use render_avatar::*;

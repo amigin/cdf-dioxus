@@ -1,5 +1,6 @@
 use crate::states::*;
 use crate::types::*;
+use crate::views::widgets::faw_instruments::fav_instruments_widget;
 
 use super::widgets::*;
 use super::*;
@@ -30,12 +31,10 @@ pub fn main_form(cx: Scope) -> Element {
                     td { style: "width:100%" }
                     td { account_balance_widget {} }
                     td {
-                        div { style: "margin-top: 6px; margin-right: 6px;",
-                            button { class: "btn btn-success btn-sm", "Deposit" }
-                        }
+                        div { style: "margin-right: 6px;", button { class: "btn btn-success btn-sm", "Deposit" } }
                     }
                     td {
-                        div { style: "margin-top: 6px; margin-right: 6px;",
+                        div { style: " margin-right: 6px;",
                             button { class: "btn btn-outline-dark btn-sm dropdown-toggle",
 
                                 span {
@@ -48,7 +47,7 @@ pub fn main_form(cx: Scope) -> Element {
                 }
             }
             div { id: "terminal-pad",
-                div { id: "fav-instruments", fav_instruments_panel { trader_id: trader_id, account_id: account_id } }
+                div { id: "fav-instruments", fav_instruments_widget { trader_id: trader_id, account_id: account_id } }
 
                 div { id: "trading-panel",
                     table { class: "tech-table", style: "width:100%; height:100%;",
@@ -60,13 +59,14 @@ pub fn main_form(cx: Scope) -> Element {
             }
         }
         div { id: "leftPanel",
-            markets_icon {}
+            div { style: "filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));", markets_icon {} }
             div { class: "left-panel-label", "Markets" }
             div { class: "left-panel-separator" }
-            portfolio_icon {}
+            div { style: "filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));", portfolio_icon {} }
             div { class: "left-panel-label", "Portfolio" }
             div { class: "left-panel-separator" }
-            history_icon {}
+            div { style: "filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));", history_icon {} }
+
             div { class: "left-panel-label", "History" }
             div { class: "left-panel-separator" }
         }

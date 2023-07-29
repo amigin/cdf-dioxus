@@ -1,10 +1,6 @@
+use crate::{states::*, views::widgets::*, APP_CTX};
 use dioxus::prelude::*;
 use my_nosql_contracts::TradingInstrumentNoSqlEntity;
-
-use crate::{
-    states::{AccountsState, FavInstrumentsState, GlobalState, InstrumentsState},
-    APP_CTX,
-};
 pub fn loading_form(cx: Scope) -> Element {
     let global_state = use_shared_state::<GlobalState>(cx).unwrap().to_owned();
 
