@@ -180,7 +180,9 @@ body {
     top: var(--terminal-top);
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 5px 0 0 0;
-    backdrop-filter: blur(10px)
+    backdrop-filter: blur(10px);
+    z-index: 10;
+    display: flex;
 }
 
 #dialogPad {
@@ -438,4 +440,55 @@ body {
 
 .withdraw-data {
     width: 400px
+}
+
+#depositPanel {
+    width: 800px;
+    height: 80%;
+    display: flex;
+    border: 1px solid var(--border-color);
+    background-color: white;
+    margin: auto;
+    border-radius: 5px;
+    box-shadow: var(--shadow);
+    position: relative;
+
+    --dialog-header-height: 40px;
+}
+
+
+.dialog-header {
+    width: 100%;
+    height: var(--dialog-header-height);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+}
+
+.dialog-header-title {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    padding-left: 10px;
+    font-size: 14px;
+    color: var(--label-color);
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+.deposit-dialog-compliance-content {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: var(--dialog-header-height);
+    display: flex;
+    margin: auto;
+}
+
+.deposit-secure-panel {
+    position: absolute;
+    bottom: 13px;
+    margin-top: -10px;
+    margin-left: 20px;
 }

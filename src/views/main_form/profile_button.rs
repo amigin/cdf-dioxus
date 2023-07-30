@@ -50,7 +50,14 @@ pub fn profile_button(cx: Scope) -> Element {
                     href: "#",
                     "Account settings"
                 }
-                a { class: "dropdown-item", href: "#", "Deposit" }
+                a {
+                    class: "dropdown-item",
+                    onclick: move |_| {
+                        main_form_state.write().show_deposit_panel();
+                    },
+                    href: "#",
+                    "Deposit"
+                }
                 a {
                     class: "dropdown-item",
                     href: "#",

@@ -2,6 +2,7 @@ pub enum ShowMenu {
     SelectAccount,
     ShowProfileMenu,
     SelectInstrument,
+    DepositPanel,
 }
 
 impl ShowMenu {
@@ -22,6 +23,13 @@ impl ShowMenu {
     pub fn select_account_is_shown(&self) -> bool {
         match &self {
             ShowMenu::SelectAccount => true,
+            _ => false,
+        }
+    }
+
+    pub fn deposit_is_shown(&self) -> bool {
+        match &self {
+            ShowMenu::DepositPanel => true,
             _ => false,
         }
     }
@@ -77,6 +85,10 @@ impl MainFormState {
         self.unwrap_main_as_bool(|show_menu| show_menu.select_account_is_shown())
     }
 
+    pub fn deposit_is_shown(&self) -> bool {
+        self.unwrap_main_as_bool(|show_menu| show_menu.deposit_is_shown())
+    }
+
     pub fn hide_dialog(&mut self) {
         self.mode = MainFormMode::MainForm(None);
     }
@@ -87,6 +99,10 @@ impl MainFormState {
 
     pub fn show_select_instrument(&mut self) {
         self.mode = MainFormMode::MainForm(Some(ShowMenu::SelectInstrument));
+    }
+
+    pub fn show_deposit_panel(&mut self) {
+        self.mode = MainFormMode::MainForm(Some(ShowMenu::DepositPanel));
     }
 
     pub fn is_main_form(&self) -> bool {

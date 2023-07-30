@@ -1,7 +1,7 @@
 use crate::states::*;
 use crate::types::*;
 use crate::views::settings_form::render_settings_form;
-use crate::views::trading_from;
+
 use crate::views::trading_from::render_trading_form;
 
 use super::*;
@@ -36,9 +36,7 @@ pub fn main_form(cx: Scope) -> Element {
                     td { img { id: "logo", src: "/img/Logo.svg" } }
                     td { style: "width:100%" }
                     td { account_balance {} }
-                    td {
-                        div { style: "margin-right: 6px;", button { class: "btn btn-success btn-sm", "Deposit" } }
-                    }
+                    td { deposit_button {} }
                     td { profile_button {} }
                 }
             }

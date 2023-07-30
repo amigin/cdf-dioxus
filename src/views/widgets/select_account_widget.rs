@@ -22,8 +22,10 @@ pub fn select_account_widget<'s>(cx: Scope<'s, SelectAccountsProps<'s>>) -> Elem
     let selected_account = accounts.get_selected_account();
     let accounts = accounts.get_accounts();
 
+    let mut result = Vec::new();
+
     if select_account_is_shown {
-        render! {
+        let content = rsx! {
             div {
                 id: "dialogBackground",
                 onclick: move |_| {
@@ -103,10 +105,12 @@ pub fn select_account_widget<'s>(cx: Scope<'s, SelectAccountsProps<'s>>) -> Elem
                     }
                 }
             }
-        }
-    } else {
-        render! { div { style: "display:hidden;" } }
+        };
+
+        result.push(content);
     }
+
+    render! {result.into_iter()}
 }
 
 #[inline_props]
