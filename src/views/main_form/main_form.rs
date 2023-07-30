@@ -1,6 +1,8 @@
 use crate::states::*;
 use crate::types::*;
-use crate::views::widgets::faw_instruments::fav_instruments_widget;
+use crate::views::settings_form::render_settings_form;
+use crate::views::trading_from;
+use crate::views::trading_from::render_trading_form;
 
 use super::*;
 use crate::views::icons::*;
@@ -9,8 +11,6 @@ use crate::views::widgets::*;
 use dioxus::prelude::*;
 
 pub fn main_form(cx: Scope) -> Element {
-    use_shared_state_provider(cx, || MainFormState::new());
-
     use_shared_state_provider(cx, || BidAskSnapshotState::new());
 
     let trader_id = {
@@ -18,14 +18,17 @@ pub fn main_form(cx: Scope) -> Element {
         global_state.read().get_trader_id().clone()
     };
 
-    let account_id = {
-        let accounts_state = use_shared_state::<AccountsState>(cx).unwrap();
-        accounts_state.read().get_selected_account_id().clone()
-    };
-
     let fav_instruments_state = use_shared_state::<FavInstrumentsState>(cx).unwrap();
 
     let trader_id_on_click = trader_id.clone();
+
+    let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
+
+    let pad_content = if main_form_state.read().is_main_form() {
+        rsx! { render_trading_form {} }
+    } else {
+        rsx! { render_settings_form {} }
+    };
     render! {
         div { id: "terminal-background",
             table { style: "width:100%; ",
@@ -39,17 +42,7 @@ pub fn main_form(cx: Scope) -> Element {
                     td { profile_button {} }
                 }
             }
-            div { id: "terminal-pad",
-                div { id: "fav-instruments", fav_instruments_widget { trader_id: trader_id, account_id: account_id } }
-
-                div { id: "trading-panel",
-                    table { class: "tech-table", style: "width:100%; height:100%;",
-                        tr {
-                            td { trading_panel {} }
-                        }
-                    }
-                }
-            }
+            div { id: "terminal-pad", pad_content }
         }
         div { id: "leftPanel",
             div { style: "filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));", markets_icon {} }

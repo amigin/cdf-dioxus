@@ -85,6 +85,8 @@ fn app(cx: Scope) -> Element {
 
     use_shared_state_provider(cx, || InstrumentsState::new());
 
+    use_shared_state_provider(cx, || MainFormState::new());
+
     use_init_atom_root(&cx);
 
     std::panic::set_hook(Box::new(|info| {

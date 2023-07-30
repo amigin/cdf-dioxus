@@ -6,7 +6,7 @@ use crate::{
         widgets::faw_instruments::{render_avatar, render_rate},
     },
 };
-use dioxus::prelude::*;
+use dioxus::{html::input_data::keyboard_types::Code, prelude::*};
 
 pub fn select_instrument_widget(cx: Scope) -> Element {
     let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
@@ -46,6 +46,11 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                     input {
                         id: "selectInstrument",
                         class: "form-control, edit-underline",
+                        onkeyup: |e| {
+                            if let Code::Escape = e.data.code() {
+                                main_form_state.write().hide_dialog();
+                            }
+                        },
                         oninput: |e| {
                             filter.set(e.value.clone());
                         }
@@ -54,7 +59,7 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                 div {
                     class: "close-icon",
                     onclick: move |_| {
-                        main_form_state.write().show_select_instrument();
+                        main_form_state.write().hide_dialog();
                     },
                     close_icon {}
                 }

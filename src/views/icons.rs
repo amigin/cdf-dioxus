@@ -61,3 +61,13 @@ pub fn instrument_search_icon(cx: Scope) -> Element {
 pub fn profile_menu_icon(cx: Scope) -> Element {
     cx.render(rsx! { Icon { width: 64, height: 64, fill: "black", icon: BsPersonBadge } })
 }
+
+pub fn close_settings_panel_icon(cx: Scope) -> Element {
+    cx.render(rsx! { Icon { width: 24, height: 24, fill: "var(--label-color)", icon: BsX } })
+}
+
+pub fn calendar_settings_panel_icon(cx: Scope) -> Element {
+    cx.render(
+        rsx! {Icon { width: 16, height: 16, fill: "var(--label-color)", icon: BsCalendarEvent }},
+    )
+}

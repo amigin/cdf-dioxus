@@ -3,7 +3,7 @@ use dioxus::prelude::*;
 use crate::{
     states::{AccountsState, MainFormState},
     types::AccountId,
-    views::widgets::real_demo_badge,
+    views::{icons::*, widgets::real_demo_badge},
 };
 
 #[derive(Props)]
@@ -55,8 +55,8 @@ pub fn select_account_widget<'s>(cx: Scope<'s, SelectAccountsProps<'s>>) -> Elem
                                                 cx.props.on_account_selected.call(account_id.clone().into());
                                                 main_form_state.write().hide_dialog();
                                              },
-                                                td{rowspan:"2",
-                                                  "ICON"
+                                                td{rowspan:"2", style:"text-align: center;",
+                                                markets_icon{}
 
                                                 }
                                                 td{

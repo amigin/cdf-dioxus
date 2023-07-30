@@ -1,12 +1,19 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: 'Roboto', sans-serif !important;
+    /*    font-family: 'Roboto', sans-serif !important;*/
     overflow: hidden;
     --label-color: gray;
     --shadow: 0 0 5px lightgray;
+    --shadow-dark: 0 0 5px gray;
     --border-color: lightgray;
     --transparent-color: #fffffff5;
+    --vz-input-border-custom: lightgray !important;
+    --vz-input-bg-custom: white !important;
+    --accent-color: #40bb82;
+    --balance-loss-color: red;
+    --text-color: black;
+    --vz-primary-border-subtle: #40bb82 !important;
 }
 
 #main {
@@ -77,8 +84,12 @@ body {
 #fav-instruments .selected {
     background-color: white;
     border-radius: 0 0 5px 5px;
-    box-shadow: 0 0 3px #dedede;
+    box-shadow: 0 0 0px gray;
     border-top: 1px solid #1df85f;
+    font-weight: bold;
+    border-left: 1px solid lightgrey;
+    border-right: 1px solid lightgrey;
+    border-bottom: 1px solid lightgrey;
 
 }
 
@@ -151,8 +162,8 @@ body {
 
 .acc_type-badge-live {
     background: white !important;
-    color: var(--bs-green) !important;
-    border: 1px solid var(--bs-green);
+    color: var(--accent-color) !important;
+    border: 1px solid var(--accent-color);
     margin-left: 5px;
 }
 
@@ -334,4 +345,97 @@ body {
     font-size: 14px;
     padding: 5px;
     cursor: pointer;
+}
+
+
+.settings-menu-item {
+    margin-top: 6px;
+    cursor: pointer;
+}
+
+.settings-menu-item-active {
+    margin-top: 6px;
+    color: var(--accent-color);
+    font-size: 20px;
+    text-shadow: 0 0 5px lightgray;
+    text-shadow: 0 0 2px white;
+}
+
+
+.table-history .table-header {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-history .table-line {
+    margin-top: 5px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 5px;
+}
+
+.withdraw-tab {
+    width: 50%;
+    padding: 10px;
+    color: var(--text-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.withdraw-tab .content {
+
+    cursor: pointer;
+}
+
+.withdraw-tab-active {
+    width: 50%;
+    color: var(--accent-color);
+    border-bottom: 3px solid var(--accent-color);
+}
+
+
+.withdraw-tab-active .content {
+    cursor: default;
+}
+
+
+.withdraw-method {
+
+    display: flex;
+    margin-top: 10px;
+
+}
+
+.withdraw-method {
+    display: flex;
+    padding: 20px;
+    width: 200px;
+    background: white;
+    border-radius: 5px;
+}
+
+.withdraw-method-active {
+    box-shadow: var(--shadow);
+    border: 1px solid var(--accent-color);
+}
+
+
+.withdraw-method-content {
+    display: block;
+}
+
+.withdraw-method-icon {
+    height: 32px;
+}
+
+
+.withdraw-method-content .name {
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.withdraw-input_group {
+
+    margin-top: 20px;
+}
+
+.withdraw-data {
+    width: 400px
 }

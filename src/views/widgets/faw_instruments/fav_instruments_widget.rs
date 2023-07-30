@@ -8,13 +8,7 @@ use crate::{
 
 use super::render_add_button;
 
-#[derive(PartialEq, Props)]
-pub struct FavInstrumentsProps {
-    pub trader_id: TraderId,
-    pub account_id: AccountId,
-}
-
-pub fn fav_instruments_widget<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element<'s> {
+pub fn fav_instruments_widget(cx: Scope) -> Element {
     let fav_instruments_state = use_shared_state::<FavInstrumentsState>(cx).unwrap();
 
     let fav_instruments = fav_instruments_state.read();
@@ -27,6 +21,12 @@ pub fn fav_instruments_widget<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element
         .iter()
         .map(|itm| Some(itm))
         .collect();
+
+    let global_state = use_shared_state::<GlobalState>(cx).unwrap();
+    global_state.read();
+
+    let accounts_state = use_shared_state::<AccountsState>(cx).unwrap();
+    //let account_id = accounts_state.read().get_selected_account_id();
 
     fav_instruments.push(None);
 
@@ -61,14 +61,14 @@ pub fn fav_instruments_widget<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element
                                 selected: instrument_id.equals_to(selected),
                                 no: no,
                                 on_click: move |instr_id: InstrumentId| {
-                                    save_selected_fav_instrument(&cx, instr_id.clone());
+                                    save_selected_fav_instrument(&cx,global_state.read().get_trader_id(), accounts_state.read().get_selected_account_id(), instr_id.clone());
                                     let mut fav_instruments = fav_instruments_state.write();
                                     fav_instruments.set_selected(instr_id.into());
                                 },
                                 on_remove: move |instr_id: InstrumentId| {
                                     let mut fav_instruments = fav_instruments_state.write();
                                     let new_list = fav_instruments.remove(instr_id.clone());
-                                    save_instruments(cx, new_list);
+                                    save_instruments(&cx, global_state.read().get_trader_id(), accounts_state.read().get_selected_account_id(), new_list);
                                 }
                             }
                         }
@@ -85,12 +85,14 @@ pub fn fav_instruments_widget<'s>(cx: Scope<'s, FavInstrumentsProps>) -> Element
     }
 }
 
-fn save_instruments<'s>(
-    cx: &'s Scoped<'s, FavInstrumentsProps>,
+fn save_instruments(
+    cx: &Scoped,
+    trader_id: &TraderId,
+    account_id: &AccountId,
     fav_instruments: Vec<InstrumentId>,
 ) {
-    let trader_id = cx.props.trader_id.clone();
-    let account_id = cx.props.account_id.clone();
+    let trader_id = trader_id.clone();
+    let account_id = account_id.clone();
 
     cx.spawn(async move {
         crate::grpc_client::FavoriteInstrumentsGrpcClient::save_fav_instruments(
@@ -102,12 +104,14 @@ fn save_instruments<'s>(
     });
 }
 
-fn save_selected_fav_instrument<'s>(
-    cx: &'s Scoped<'s, FavInstrumentsProps>,
+fn save_selected_fav_instrument(
+    cx: &Scoped,
+    trader_id: &TraderId,
+    account_id: &AccountId,
     instrument_id: InstrumentId,
 ) {
-    let trader_id = cx.props.trader_id.clone();
-    let account_id = cx.props.account_id.clone();
+    let trader_id = trader_id.clone();
+    let account_id = account_id.clone();
     cx.spawn(async move {
         crate::grpc_client::KeyValueGrpcClient::save_selected_fav_instrument(
             trader_id,

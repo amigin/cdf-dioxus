@@ -1,6 +1,9 @@
 use dioxus::prelude::*;
 
-use crate::{states::MainFormState, views::icons::*};
+use crate::{
+    states::{GlobalState, MainFormState, SettingsMenuItem},
+    views::icons::*,
+};
 
 pub fn profile_button(cx: Scope) -> Element {
     let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
@@ -39,11 +42,40 @@ pub fn profile_button(cx: Scope) -> Element {
                     }
                 }
                 hr {}
-                a { class: "dropdown-item", href: "#", "Account settings" }
+                a {
+                    class: "dropdown-item",
+                    onclick: move |_| {
+                        main_form_state.write().show_settings_form(SettingsMenuItem::Security);
+                    },
+                    href: "#",
+                    "Account settings"
+                }
                 a { class: "dropdown-item", href: "#", "Deposit" }
-                a { class: "dropdown-item", href: "#", "Withdraw" }
-                a { class: "dropdown-item", href: "#", "Balance history" }
-                a { class: "dropdown-item", href: "#", "Logout" }
+                a {
+                    class: "dropdown-item",
+                    href: "#",
+                    onclick: move |_| {
+                        main_form_state.write().show_settings_form(SettingsMenuItem::Withdraw);
+                    },
+                    "Withdraw"
+                }
+                a {
+                    class: "dropdown-item",
+                    href: "#",
+                    onclick: move |_| {
+                        main_form_state.write().show_settings_form(SettingsMenuItem::BalanceHistory);
+                    },
+                    "Balance history"
+                }
+                a {
+                    class: "dropdown-item",
+                    onclick: move |_| {
+                        let global_state = use_shared_state::<GlobalState>(cx).unwrap();
+                        global_state.write().logout();
+                    },
+                    href: "#",
+                    "Logout"
+                }
             }
         };
 

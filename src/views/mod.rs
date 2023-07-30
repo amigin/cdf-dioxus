@@ -11,3 +11,5 @@ pub use sign_up_form::*;
 pub mod widgets;
 
 pub mod icons;
+pub mod settings_form;
+pub mod trading_from;

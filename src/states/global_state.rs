@@ -42,4 +42,8 @@ impl GlobalState {
             _ => panic!("GlobalState::get_trader_id() called on non-authenticated state"),
         }
     }
+
+    pub fn logout(&mut self) {
+        *self = Self::NonAuthenticated;
+    }
 }

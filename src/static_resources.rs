@@ -1,6 +1,6 @@
 use std::net::SocketAddr;
 
-pub const BOOTSTRAP_CSS: &[u8] = std::include_bytes!("../files/bootstrap.css");
+pub const BOOTSTRAP_CSS: &[u8] = std::include_bytes!("../files/styled.css");
 pub const APP_CSS: &[u8] = std::include_bytes!("../files/app.css");
 pub const APP_JS: &[u8] = std::include_bytes!("../files/app.js");
 
