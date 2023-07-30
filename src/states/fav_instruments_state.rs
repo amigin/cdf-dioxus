@@ -42,6 +42,7 @@ impl FavInstrumentsState {
             return self.instruments.clone();
         }
 
+        self.selected = instrument_id.clone();
         self.instruments.push(instrument_id);
         self.instruments.clone()
     }

@@ -96,22 +96,6 @@ fn app(cx: Scope) -> Element {
     let toast = use_atom_ref(&cx, TOAST_MANAGER);
 
     let state: &UseSharedState<GlobalState> = use_shared_state::<GlobalState>(cx).unwrap();
-    /*
-    let mut toast_sender = ToastSender::new();
-
-    let mut receiver = toast_sender.get_receiver();
-
-    use_shared_state_provider(cx, || Arc::new(toast_sender));
-
-
-       cx.spawn(async move {
-           while let Some(value) = receiver.recv().await {
-               let _id = toast
-                   .write()
-                   .popup(ToastInfo::error(&value.body, &value.header));
-           }
-       });
-    */
 
     match state.read().as_ref() {
         GlobalState::NonAuthenticated => render! {

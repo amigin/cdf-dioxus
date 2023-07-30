@@ -1,4 +1,6 @@
 use dioxus::prelude::*;
+
+use crate::views::trading_from::*;
 pub fn trading_panel(cx: Scope) -> Element {
     render! {
         button { id: "pnl-calc-btn", class: "btn btn-outline-dark", "Pnl Calculator" }
@@ -45,7 +47,7 @@ pub fn trading_panel(cx: Scope) -> Element {
 
         div {
             label { id: "labelSetPurchaseAt", "Purchase at" }
-            button { id: "btnSetPurchaseAt", class: "btn btn-outline-dark", "Set Price" }
+            render_set_price_panel {}
         }
     }
 }

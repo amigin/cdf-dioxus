@@ -48,6 +48,16 @@ impl BidAskSnapshotState {
             }
         }
     }
+
+    pub fn try_get_rate_as_str(&self, instrument: Option<&Instrument>) -> Option<String> {
+        let instrument = instrument?;
+
+        if let Some(bid_ask) = self.bid_ask.get(instrument.instrument_id.as_str()) {
+            return format!("{}", precision_f64(bid_ask.bid, instrument.digits)).into();
+        }
+
+        None
+    }
 }
 
 fn precision_f64(x: f64, decimals: u32) -> f64 {

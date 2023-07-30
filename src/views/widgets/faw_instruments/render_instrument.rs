@@ -57,8 +57,9 @@ pub fn render_instrument<'s>(cx: Scope<'s, FavInstrumentProps<'s>>) -> Element<'
                                 td { rowspan: 2,
                                     div {
                                         class: "hide_fav_instr",
-                                        onclick: move |_| {
+                                        onclick: move |e| {
                                             cx.props.on_remove.call(cx.props.id.clone());
+                                            e.stop_propagation();
                                         },
                                         close_icon {}
                                     }

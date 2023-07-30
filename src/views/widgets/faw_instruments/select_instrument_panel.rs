@@ -7,8 +7,12 @@ use crate::{
     },
 };
 use dioxus::{html::input_data::keyboard_types::Code, prelude::*};
+#[derive(Props)]
+pub struct SelectInstrumentProps<'s> {
+    pub on_click: EventHandler<'s, (InstrumentId, Vec<InstrumentId>)>,
+}
 
-pub fn select_instrument_widget(cx: Scope) -> Element {
+pub fn select_instrument_panel<'s>(cx: Scope<'s, SelectInstrumentProps>) -> Element<'s> {
     let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
 
     let filter = use_state(cx, || "".to_string());
@@ -79,7 +83,10 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
                             onclick: move |_| {
                                 let instr = fav_instruments.write().add(id_on_click.clone().into());
                                 main_form_state.write().hide_dialog();
-                                save_instruments(cx, instr);
+                                cx.props.on_click.call((
+                                    id_on_click.clone().into(),
+                                    instr,
+                                ));
                             },
                             div{class: "instrument-item instrument-avatar",
                                 render_avatar{id: id.clone()}
@@ -101,27 +108,4 @@ pub fn select_instrument_widget(cx: Scope) -> Element {
         }
         script { "set_focus('selectInstrument')" }
     }
-}
-
-fn save_instruments(cx: &Scoped, fav_instruments: Vec<InstrumentId>) {
-    let trader_id = use_shared_state::<GlobalState>(cx)
-        .unwrap()
-        .read()
-        .get_trader_id()
-        .clone();
-
-    let account_id = use_shared_state::<AccountsState>(cx)
-        .unwrap()
-        .read()
-        .get_selected_account_id()
-        .clone();
-
-    cx.spawn(async move {
-        crate::grpc_client::FavoriteInstrumentsGrpcClient::save_fav_instruments(
-            trader_id,
-            account_id,
-            fav_instruments,
-        )
-        .await;
-    });
 }

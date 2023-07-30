@@ -492,3 +492,67 @@ body {
     margin-top: -10px;
     margin-left: 20px;
 }
+
+
+/*Set Price*/
+
+
+#setPricePanel {
+    width: 200px;
+
+    border: var(--border-color);
+    background-color: white;
+    box-shadow: var(--shadow);
+    position: absolute;
+    left: -205px;
+    margin-top: -200px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+
+#setPricePanel .header {
+    display: flex;
+}
+
+#setPricePanel .title {
+    display: flex;
+    width: 100%;
+    margin-left: 5px;
+    margin-top: 5px;
+    font-weight: bold;
+}
+
+#setPricePanel .close-icon {
+    display: flex;
+
+    cursor: pointer;
+}
+
+#setPricePanel .rate {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#purchaseAtPanel {
+    display: flex;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
+
+}
+
+#purchaseAtPanel .purchase-price {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+#purchaseAtPanel .remove-button {
+    display: flex;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+    padding: 1px;
+    margin: 0;
+    cursor: pointer;
+}

@@ -12,6 +12,7 @@ use dioxus::prelude::*;
 
 pub fn main_form(cx: Scope) -> Element {
     use_shared_state_provider(cx, || BidAskSnapshotState::new());
+    use_shared_state_provider(cx, || TradingPanelState::new());
 
     let trader_id = {
         let global_state = use_shared_state::<GlobalState>(cx).unwrap();

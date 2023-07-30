@@ -12,7 +12,7 @@ pub fn fav_instruments_widget(cx: Scope) -> Element {
     let fav_instruments_state = use_shared_state::<FavInstrumentsState>(cx).unwrap();
 
     let fav_instruments = fav_instruments_state.read();
-    let selected = &fav_instruments.get_selected();
+    let selected = fav_instruments.get_selected();
 
     let instruments = use_shared_state::<InstrumentsState>(cx).unwrap().read();
 
@@ -61,9 +61,9 @@ pub fn fav_instruments_widget(cx: Scope) -> Element {
                                 selected: instrument_id.equals_to(selected),
                                 no: no,
                                 on_click: move |instr_id: InstrumentId| {
+                                    fav_instruments_state.write().set_selected(instr_id.clone());
                                     save_selected_fav_instrument(&cx,global_state.read().get_trader_id(), accounts_state.read().get_selected_account_id(), instr_id.clone());
-                                    let mut fav_instruments = fav_instruments_state.write();
-                                    fav_instruments.set_selected(instr_id.into());
+
                                 },
                                 on_remove: move |instr_id: InstrumentId| {
                                     let mut fav_instruments = fav_instruments_state.write();

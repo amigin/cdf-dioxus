@@ -10,3 +10,5 @@ pub use instruments_state::*;
 pub use main_form_state::*;
 mod bid_ask_snapshot;
 pub use bid_ask_snapshot::*;
+mod trading_panel_state;
+pub use trading_panel_state::*;
