@@ -39,7 +39,7 @@ pub fn select_account_widget<'s>(cx: Scope<'s, SelectAccountsProps<'s>>) -> Elem
                                     accounts.iter().map(|itm|{
                                         let account_id = itm.account_id.as_str().to_string();
                                         let account_id2 = itm.account_id.as_str().to_string();
-                                        let currency = itm.currency.as_str();
+                                        let currency_sign = itm.currency.as_currency_str();
                                         let balance = itm.balance.to_string();
                                         let is_live = itm.is_live;
 
@@ -62,14 +62,14 @@ pub fn select_account_widget<'s>(cx: Scope<'s, SelectAccountsProps<'s>>) -> Elem
 
                                                 }
                                                 td{
-                                                    "{currency}{balance}", real_demo_badge { is_live: is_live }
+                                                    "{currency_sign}{balance}", real_demo_badge { is_live: is_live }
                                                 }td{
-                                                    render_invested{selected: is_selected, currency:currency.to_string()}
+                                                    render_invested{selected: is_selected, currency:currency_sign.to_string()}
                                                 }td{
-                                                    render_profit{selected: is_selected, currency:currency.to_string()}
+                                                    render_profit{selected: is_selected, currency:currency_sign.to_string()}
                                                 }
                                                 td{
-                                                    render_available{selected: is_selected, currency:currency.to_string()}
+                                                    render_available{selected: is_selected, currency:currency_sign.to_string()}
                                                 }
                                                 td{rowspan:"2",
                                                     button{

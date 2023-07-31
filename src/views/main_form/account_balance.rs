@@ -10,7 +10,7 @@ pub fn account_balance(cx: Scope) -> Element {
 
         let selected_account = read_access.get_selected_account();
 
-        let currency = selected_account.currency.as_str().to_string();
+        let currency = selected_account.currency.as_currency_str().to_string();
         let balance = selected_account.balance.to_string();
         let is_live = selected_account.is_live;
 

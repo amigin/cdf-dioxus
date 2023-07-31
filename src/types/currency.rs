@@ -9,6 +9,13 @@ impl Currency {
     pub fn as_str(&self) -> &str {
         &self.0
     }
+
+    pub fn as_currency_str(&self) -> &str {
+        match self.0.as_str() {
+            "USD" => "$",
+            _ => &self.0,
+        }
+    }
 }
 
 impl Into<String> for Currency {

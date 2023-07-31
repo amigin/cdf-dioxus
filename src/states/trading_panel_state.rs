@@ -8,28 +8,6 @@ pub enum TradingPanelModel {
     SetPrice,
 }
 
-#[derive(Clone, Copy)]
-pub enum ProdValueMode {
-    Currency,
-    Percent,
-}
-
-impl ProdValueMode {
-    pub fn get_sign(&self) -> &'static str {
-        match self {
-            ProdValueMode::Currency => "$",
-            ProdValueMode::Percent => "%",
-        }
-    }
-
-    pub fn into_value(&self, value: String) -> TpSlValue {
-        match self {
-            ProdValueMode::Currency => TpSlValue::Currency(value),
-            ProdValueMode::Percent => TpSlValue::Percent(value),
-        }
-    }
-}
-
 #[derive(Clone, Debug)]
 pub enum TpSlValue {
     Currency(String),
@@ -41,6 +19,13 @@ impl TpSlValue {
         match self {
             &Self::Currency(_) => Self::Currency(value),
             &Self::Percent(_) => Self::Percent(value),
+        }
+    }
+
+    pub fn toggle(&self) -> Self {
+        match &self {
+            Self::Currency(value) => Self::Percent(value.clone()),
+            Self::Percent(value) => Self::Currency(value.clone()),
         }
     }
 
@@ -57,13 +42,17 @@ impl TpSlValue {
             Self::Percent(value) => format!("{}%", value),
         }
     }
+
+    pub fn get_sign(&self) -> &'static str {
+        match self {
+            Self::Currency(_) => "$",
+            Self::Percent(_) => "%",
+        }
+    }
 }
 
 pub struct TradingPanelState {
     modals: Option<TradingPanelModel>,
-
-    pub profit_value_mode: ProdValueMode,
-    pub loss_value_mode: ProdValueMode,
 
     pub purchase_at_price: HashMap<String, String>,
 
@@ -78,22 +67,6 @@ impl TradingPanelState {
             purchase_at_price: HashMap::new(),
             tp: HashMap::new(),
             sl: HashMap::new(),
-            profit_value_mode: ProdValueMode::Currency,
-            loss_value_mode: ProdValueMode::Currency,
-        }
-    }
-
-    pub fn toggle_tp_mode(&mut self) {
-        self.profit_value_mode = match self.profit_value_mode {
-            ProdValueMode::Currency => ProdValueMode::Percent,
-            ProdValueMode::Percent => ProdValueMode::Currency,
-        }
-    }
-
-    pub fn toggle_sl_mode(&mut self) {
-        self.loss_value_mode = match self.loss_value_mode {
-            ProdValueMode::Currency => ProdValueMode::Percent,
-            ProdValueMode::Percent => ProdValueMode::Currency,
         }
     }
 

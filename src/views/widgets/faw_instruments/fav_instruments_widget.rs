@@ -26,6 +26,7 @@ pub fn fav_instruments_widget(cx: Scope) -> Element {
     global_state.read();
 
     let accounts_state = use_shared_state::<AccountsState>(cx).unwrap();
+    let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
     //let account_id = accounts_state.read().get_selected_account_id();
 
     fav_instruments.push(None);
@@ -62,6 +63,7 @@ pub fn fav_instruments_widget(cx: Scope) -> Element {
                                 no: no,
                                 on_click: move |instr_id: InstrumentId| {
                                     fav_instruments_state.write().set_selected(instr_id.clone());
+                                    main_form_state.write().hide_dialog();
                                     save_selected_fav_instrument(&cx,global_state.read().get_trader_id(), accounts_state.read().get_selected_account_id(), instr_id.clone());
 
                                 },

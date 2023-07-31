@@ -43,7 +43,7 @@ pub fn render_set_price_panel(cx: Scope) -> Element {
         .cloned()
     {
         result.push(rsx! {
-            div { id: "autoClosePanelValue",
+            div { id: "purchaseAtPanel",
                 div { class: "purchase-price", "{purchase_at}" }
                 div {
                     class: "remove-button",
@@ -85,7 +85,7 @@ pub fn render_set_price_panel(cx: Scope) -> Element {
                 div { style: "margin-top: 15px",
                     label { "When price is:" }
                     input {
-                        class: "form-control form-control-sm",
+                        class: "form-control form-control-sm ",
                         value: "{rate_value}",
                         oninput: move |e| {
                             rate_value.set(e.value.clone());
