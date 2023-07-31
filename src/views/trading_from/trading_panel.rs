@@ -1,6 +1,7 @@
 use dioxus::prelude::*;
 
 use crate::views::trading_from::*;
+use crate::MOCK_CURRENCY_USD;
 pub fn trading_panel(cx: Scope) -> Element {
     render! {
         button { id: "pnl-calc-btn", class: "btn btn-outline-dark", "Pnl Calculator" }
@@ -34,7 +35,7 @@ pub fn trading_panel(cx: Scope) -> Element {
         table { class: "tech-table", style: "width:100%;",
             tr {
                 td { style: "color:gray", "Volume" }
-                td { style: "text-align: right;", "USD: 250" }
+                td { style: "text-align: right;", "{MOCK_CURRENCY_USD}: 250" }
             }
             tr {
                 td { style: "color:gray", "Spread" }

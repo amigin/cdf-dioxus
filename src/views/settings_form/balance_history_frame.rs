@@ -2,13 +2,15 @@ use dioxus::prelude::*;
 
 use crate::views::icons::*;
 
+use crate::MOCK_CURRENCY_USD;
+
 pub fn balance_history_frame(cx: Scope) -> Element {
     let table_lines = (0..6).into_iter().map(|_| {
         rsx! {
             tr { class: "table-line",
                 td { div { "30 Jul 2023, 10:29:12" } }
-                td { style: "color:var(--balance-loss-color)", "-USD:100.00" }
-                td { "USD:0.00" }
+                td { style: "color:var(--balance-loss-color)", "-{MOCK_CURRENCY_USD}:100.00" }
+                td { "{MOCK_CURRENCY_USD}:0.00" }
                 td { style: "color: var(--label-color)", "BalanceCorrection" }
             }
         }

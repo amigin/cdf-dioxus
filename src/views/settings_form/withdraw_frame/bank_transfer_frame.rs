@@ -1,11 +1,13 @@
 use dioxus::prelude::*;
 
+use crate::MOCK_CURRENCY_USD;
+
 pub fn bank_transfer_frame(cx: Scope) -> Element {
     render! {
         div { style: "margin-top:20px", label { "Withdrawable" } }
 
         div { style: "font-size: 24px;",
-            "USD: "
+            "{MOCK_CURRENCY_USD}: "
             span { style: "font-weight:bold", "0.00" }
         }
 
