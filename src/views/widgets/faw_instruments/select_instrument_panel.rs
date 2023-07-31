@@ -89,7 +89,7 @@ pub fn select_instrument_panel<'s>(cx: Scope<'s, SelectInstrumentProps>) -> Elem
                                 ));
                             },
                             div{class: "instrument-item instrument-avatar",
-                                render_avatar{id: id.clone()}
+                                render_avatar{id: instrument.instrument_id.clone()}
                             }
                             div{class: "instrument-item instrument-name",
                                div{

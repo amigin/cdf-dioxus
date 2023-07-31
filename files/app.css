@@ -605,13 +605,29 @@ body {
 /* Pnl calculator panel */
 
 #pnlCalculatorPanel {
-    width: 200px;
+    width: 250px;
     border: var(--border-color);
     background-color: white;
     box-shadow: var(--shadow);
     position: absolute;
-    left: -205px;
+    left: -255px;
     margin-top: -40px;
     border-radius: 5px;
     padding: 10px;
+}
+
+#pnlCalculatorPanel .select-instrument {
+    display: flex;
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+
+    border-radius: 5px;
+
+
+}
+
+#pnlCalculatorPanel .instrument-name {
+    display: flex;
+    align-items: center;
+    width: 100%;
 }

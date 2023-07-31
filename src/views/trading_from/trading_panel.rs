@@ -4,7 +4,7 @@ use crate::views::trading_from::*;
 use crate::MOCK_CURRENCY_USD;
 pub fn trading_panel(cx: Scope) -> Element {
     render! {
-        pnl_calculator {}
+        pnl_calculator_button {}
 
         div {
             label { "Invest" }

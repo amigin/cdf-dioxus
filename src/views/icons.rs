@@ -71,3 +71,9 @@ pub fn calendar_settings_panel_icon(cx: Scope) -> Element {
         rsx! {Icon { width: 16, height: 16, fill: "var(--label-color)", icon: BsCalendarEvent }},
     )
 }
+
+pub fn drop_down_icon(cx: Scope) -> Element {
+    cx.render(
+        rsx! { Icon { width: 8, height: 8, fill: "var(--label-color)", icon: BsCaretDownFill } },
+    )
+}

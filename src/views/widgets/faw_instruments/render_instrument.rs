@@ -29,7 +29,7 @@ pub fn render_instrument<'s>(cx: Scope<'s, FavInstrumentProps<'s>>) -> Element<'
             td {
                 table { class: "fav-instrument {first} selected",
                     tr {
-                        td { rowspan: 2, render_avatar { id: cx.props.id.as_str().into() } }
+                        td { rowspan: 2, render_avatar { id: cx.props.id.clone() } }
                         td { style: "width: 100%;", "{cx.props.name}" }
                         td { rowspan: 2,
                             div { style: "opacity:0", class: "hide_fav_instr", close_icon {} }
@@ -52,7 +52,7 @@ pub fn render_instrument<'s>(cx: Scope<'s, FavInstrumentProps<'s>>) -> Element<'
                     td {
                         table {
                             tr {
-                                td { rowspan: 2, render_avatar { id: cx.props.id.as_str().into() } }
+                                td { rowspan: 2, render_avatar { id: cx.props.id.clone() } }
                                 td { style: "width: 100%;", "{cx.props.name.as_str()}" }
                                 td { rowspan: 2,
                                     div {
