@@ -600,3 +600,18 @@ body {
     border: 1px solid var(--border-color);
     cursor: pointer;
 }
+
+
+/* Pnl calculator panel */
+
+#pnlCalculatorPanel {
+    width: 200px;
+    border: var(--border-color);
+    background-color: white;
+    box-shadow: var(--shadow);
+    position: absolute;
+    left: -205px;
+    margin-top: -40px;
+    border-radius: 5px;
+    padding: 10px;
+}

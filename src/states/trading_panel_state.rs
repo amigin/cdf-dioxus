@@ -3,7 +3,7 @@ use std::collections::HashMap;
 use crate::types::InstrumentId;
 
 pub enum TradingPanelModel {
-    ShowTradingCalculator,
+    ShowPnlCalculator,
     SetAutoClose,
     SetPrice,
 }
@@ -53,9 +53,7 @@ impl TpSlValue {
 
 pub struct TradingPanelState {
     modals: Option<TradingPanelModel>,
-
     pub purchase_at_price: HashMap<String, String>,
-
     pub tp: HashMap<String, TpSlValue>,
     pub sl: HashMap<String, TpSlValue>,
 }
@@ -76,6 +74,21 @@ impl TradingPanelState {
 
     pub fn toggle_set_auto_close(&mut self) {
         self.modals = Some(TradingPanelModel::SetAutoClose);
+    }
+    pub fn toggle_show_pnl_calc(&mut self) {
+        if self.is_show_pnl_calc() {
+            self.modals = None;
+        } else {
+            self.modals = Some(TradingPanelModel::ShowPnlCalculator);
+        }
+    }
+
+    pub fn is_show_pnl_calc(&self) -> bool {
+        if let Some(TradingPanelModel::ShowPnlCalculator) = self.modals {
+            true
+        } else {
+            false
+        }
     }
 
     pub fn is_show_set_price(&self) -> bool {

@@ -73,6 +73,10 @@ impl MainFormState {
         }
     }
 
+    pub fn pnl_calculator_is_shown(&self) -> bool {
+        self.unwrap_main_as_bool(|show_menu| show_menu.select_instrument_is_shown())
+    }
+
     pub fn select_instrument_is_shown(&self) -> bool {
         self.unwrap_main_as_bool(|show_menu| show_menu.select_instrument_is_shown())
     }
