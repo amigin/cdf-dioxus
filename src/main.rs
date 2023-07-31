@@ -23,6 +23,8 @@ mod static_resources;
 mod types;
 mod views;
 
+pub const MOCK_CURRENCY_USD: &'static str = "USD";
+
 lazy_static::lazy_static! {
     pub static ref APP_CTX: Arc<AppContext> = {
         Arc::new(AppContext::new())

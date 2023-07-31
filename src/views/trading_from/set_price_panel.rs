@@ -35,10 +35,7 @@ pub fn render_set_price_panel(cx: Scope) -> Element {
     } else {
         "true"
     };
-
     let mut result = Vec::with_capacity(2);
-
-    /*  */
 
     if let Some(purchase_at) = trading_panel_state
         .read()
@@ -46,7 +43,7 @@ pub fn render_set_price_panel(cx: Scope) -> Element {
         .cloned()
     {
         result.push(rsx! {
-            div { id: "purchaseAtPanel",
+            div { id: "autoClosePanelValue",
                 div { class: "purchase-price", "{purchase_at}" }
                 div {
                     class: "remove-button",
@@ -74,7 +71,7 @@ pub fn render_set_price_panel(cx: Scope) -> Element {
     if trading_panel_state.read().is_show_set_price() {
         result.push(rsx! {
             div { id: "setPricePanel",
-                div { class: "header",
+                div { class: "floating-panel-header",
                     div { class: "title", "Purchase at" }
                     div {
                         class: "close-icon",

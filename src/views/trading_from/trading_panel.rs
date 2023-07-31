@@ -28,7 +28,7 @@ pub fn trading_panel(cx: Scope) -> Element {
 
         div {
             label { "Auto close" }
-            button { id: "btnAutoClose", class: "btn btn-outline-dark", "Set" }
+            render_set_auto_close {}
         }
 
         table { class: "tech-table", style: "width:100%;",

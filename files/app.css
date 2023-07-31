@@ -16,6 +16,7 @@ body {
     --vz-primary-border-subtle: #40bb82 !important;
 }
 
+
 #main {
     overflow: hidden;
     text-align: center;
@@ -24,6 +25,21 @@ body {
 
 #logo {
     height: 48px;
+}
+
+
+/* Bootstrap overrides group */
+
+.input-group-text-sm {
+    height: 28px;
+    width: 28px;
+    border-radius: 5px 0 0 5px;
+    padding: 10px;
+}
+
+.form-control-sm {
+    border-radius: 0 5px 5px 0;
+    border-left: none;
 }
 
 .instr-avatar {
@@ -511,11 +527,20 @@ body {
 }
 
 
-#setPricePanel .header {
+
+#setPricePanel .rate {
+    color: blue;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* Floating Panel Layout */
+
+.floating-panel-header {
     display: flex;
 }
 
-#setPricePanel .title {
+.floating-panel-header .title {
     display: flex;
     width: 100%;
     margin-left: 5px;
@@ -523,17 +548,13 @@ body {
     font-weight: bold;
 }
 
-#setPricePanel .close-icon {
+.floating-panel-header .close-icon {
     display: flex;
 
     cursor: pointer;
 }
 
-#setPricePanel .rate {
-    color: blue;
-    cursor: pointer;
-    text-decoration: underline;
-}
+/* Purchase at Panel */
 
 #purchaseAtPanel {
     display: flex;
@@ -552,7 +573,30 @@ body {
     display: flex;
     border-radius: 3px;
     border: 1px solid var(--border-color);
-    padding: 1px;
+    padding: 1px 5px;
     margin: 0;
+    cursor: pointer;
+}
+
+
+/* Set auto-close Panel */
+
+
+#setAutoClosePanel {
+    width: 200px;
+    border: var(--border-color);
+    background-color: white;
+    box-shadow: var(--shadow);
+    position: absolute;
+    left: -205px;
+    margin-top: -200px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#autoClosePanelValue {
+    display: flex;
+    padding: 6px 10px;
+    border: 1px solid var(--border-color);
     cursor: pointer;
 }
