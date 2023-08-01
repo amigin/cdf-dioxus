@@ -2,10 +2,10 @@ use crate::states::*;
 use crate::types::*;
 use crate::views::settings_form::render_settings_form;
 
-use crate::views::trading_from::render_trading_form;
+use crate::views::trading_from::render_fav_instruments_bar;
+use crate::views::trading_from::render_trading_panel;
 
 use super::*;
-use crate::views::icons::*;
 use crate::views::widgets::*;
 
 use dioxus::prelude::*;
@@ -26,7 +26,7 @@ pub fn main_form(cx: Scope) -> Element {
     let main_form_state = use_shared_state::<MainFormState>(cx).unwrap();
 
     let pad_content = if main_form_state.read().is_main_form() {
-        rsx! { render_trading_form {} }
+        rsx! { render_fav_instruments_bar {} }
     } else {
         rsx! { render_settings_form {} }
     };
@@ -43,18 +43,10 @@ pub fn main_form(cx: Scope) -> Element {
             }
             div { id: "terminal-pad", pad_content }
         }
-        div { id: "leftPanel",
-            div { style: "filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));", markets_icon {} }
-            div { class: "left-panel-label", "Markets" }
-            div { class: "left-panel-separator" }
-            div { style: "filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));", portfolio_icon {} }
-            div { class: "left-panel-label", "Portfolio" }
-            div { class: "left-panel-separator" }
-            div { style: "filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));", history_icon {} }
 
-            div { class: "left-panel-label", "History" }
-            div { class: "left-panel-separator" }
-        }
+        render_trading_panel {}
+
+        left_panel {}
         select_account_widget {
             on_account_selected: move |account_id: AccountId| {
                 let accounts_state = use_shared_state::<AccountsState>(cx).unwrap();

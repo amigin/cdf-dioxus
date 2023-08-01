@@ -1,8 +1,8 @@
+/*
 function resize() {
     let trading_panel_width = 320;
 
     let el = document.getElementById("main");
-
 
     el.style.setProperty('display', "block");
 
@@ -14,6 +14,7 @@ function resize() {
 
     let left_offset = el.style.getPropertyValue('--terminal-left-offset');
     let top_offset = el.style.getPropertyValue('--terminal-top-offset');
+
 
     el.style.setProperty('--terminal-left', left_offset + "px");
     el.style.setProperty('--terminal-top', top_offset + "px");
@@ -28,7 +29,7 @@ function resize() {
 
     el.style.setProperty('height', winHeight + "px");
 }
-
+*/
 
 function set_focus(id) {
     setTimeout(function () {
@@ -39,5 +40,17 @@ function set_focus(id) {
 
     }, 100);
 }
-addEventListener("resize", resize);
-setTimeout(resize, 100);
+
+
+function show_panel() {
+    let el = document.getElementById("main");
+    el.style.setProperty('--show-panel-offset', "320px");
+
+}
+function hide_panel() {
+    let el = document.getElementById("main");
+    el.style.setProperty('--show-panel-offset', "0px");
+}
+
+//addEventListener("resize", resize);
+//setTimeout(resize, 100);

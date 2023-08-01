@@ -20,7 +20,13 @@ body {
 #main {
     overflow: hidden;
     text-align: center;
-    display: none;
+    --terminal-left-offset: 60px;
+    --terminal-top-offset: 48px;
+    --total-width: 100vw;
+    --total-height: 100vh;
+    --trading-panel-width: 320px;
+    --terminal-width: calc(var(--total-width) - var(--terminal-left-offset));
+    --terminal-height: calc(var(--total-height) - var(--terminal-top-offset));
 }
 
 #logo {
@@ -55,16 +61,16 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: var(--main-width);
-    height: var(--main-height);
+    width: var(--total-width);
+    height: var(--total-height);
 }
 
 #terminal-pad {
     position: absolute;
-    width: var(--terminal-width);
-    height: var(--terminal-height);
-    left: var(--terminal-left);
-    top: var(--terminal-top);
+    width: calc(var(--total-width) - var(--terminal-left-offset));
+    height: calc(var(--total-height) - var(--terminal-top-offset));
+    left: calc(var(--terminal-left-offset) + var(--show-panel-offset));
+    top: calc(var(--terminal-top-offset));
     box-shadow: 0 0 25px lightgray;
     background-color: #f8f7f7;
     border-radius: 5px 0 0 0;
@@ -124,10 +130,10 @@ body {
 #trading-panel {
     position: absolute;
     box-shadow: 0 0 3px lightgray;
-    top: 0;
-    left: var(--trading-panel-left);
+    top: calc(var(--terminal-top-offset) + 3px);
+    right: 0;
     width: var(--trading-panel-width);
-    height: var(--terminal-height);
+    height: calc(var(--total-height) - var(--terminal-top-offset) - 6px);
     padding: 3px;
     text-align: left;
     background-color: #f8f7f7;
@@ -192,8 +198,8 @@ body {
     position: absolute;
     width: var(--terminal-width);
     height: var(--terminal-height);
-    left: var(--terminal-left);
-    top: var(--terminal-top);
+    left: var(--terminal-left-offset);
+    top: var(--terminal-top-offset);
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 5px 0 0 0;
     backdrop-filter: blur(10px);
@@ -250,8 +256,9 @@ body {
 
 #leftPanel {
     position: absolute;
-    top: var(--terminal-top);
-    width: var(--terminal-left);
+    top: var(--terminal-top-offset);
+    width: var(--terminal-left-offset);
+    left: 0;
 }
 
 .left-panel-separator {

@@ -6,3 +6,5 @@ mod account_balance;
 pub use account_balance::*;
 mod deposit_button;
 pub use deposit_button::*;
+mod left_panel;
+use left_panel::*;

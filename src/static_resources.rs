@@ -30,7 +30,7 @@ pub fn get_html(addr: SocketAddr) -> String {
             <!DOCTYPE html>
             <html>
                 <head> <title>CFD web terminal</title> {header_content} </head>
-                <body> <div id="main" style="--terminal-left-offset: 60;--terminal-top-offset: 48;"></div> </body>
+                <body style:"--show-panel-offset:0"> <div id="main"></div> </body>
                 {glue}
             </html>
             "#,
