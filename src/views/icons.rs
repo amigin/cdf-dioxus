@@ -55,7 +55,7 @@ pub fn history_icon(cx: Scope) -> Element {
 }
 
 pub fn instrument_search_icon(cx: Scope) -> Element {
-    cx.render(rsx! { Icon { width: 16, height: 16, fill: "var(--label-color)", icon: BsSearch } })
+    render! { Icon { width: 16, height: 16, fill: "var(--label-color)", icon: BsSearch } }
 }
 
 pub fn profile_menu_icon(cx: Scope) -> Element {

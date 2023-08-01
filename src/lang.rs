@@ -6,6 +6,9 @@ lazy_static::lazy_static! {
         sign_up: "Sign Up".to_string(),
         login_failed: "Login failed".to_string(),
         total: "Total".to_string(),
+        pnl_calculator: PnlCalculator {
+            pnl_calculator_button: "Pnl Calculator".to_string(),
+        },
     };
 }
 
@@ -16,4 +19,9 @@ pub struct Language {
     pub sign_up: String,
     pub login_failed: String,
     pub total: String, // At the header of the account balance widget
+    pub pnl_calculator: PnlCalculator,
+}
+
+pub struct PnlCalculator {
+    pub pnl_calculator_button: String,
 }

@@ -6,7 +6,4 @@ mod set_price_panel;
 pub use set_price_panel::*;
 mod set_auto_close;
 pub use set_auto_close::*;
-mod pnl_calculator_button;
-pub use pnl_calculator_button::*;
-mod pnl_calculator_panel;
-pub use pnl_calculator_panel::*;
+mod pnl_calculator;

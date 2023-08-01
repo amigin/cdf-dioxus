@@ -58,8 +58,7 @@ async fn main() {
 
     APP_CTX.apply_settings(Arc::new(settings)).await;
 
-    let addr: SocketAddr = ([127, 0, 0, 1], 9001).into();
-    let acceptor = TcpListener::bind(addr);
+    let acceptor = TcpListener::new("0.0.0.0:9001").bind().await;
     let view = LiveViewPool::new();
 
     let router = Router::new()
@@ -69,11 +68,9 @@ async fn main() {
         .push(Router::with_path("img/<**path>").get(StaticDir::new("./files/img")))
         .push(Router::with_path("avatar/<**path>").get(http_server::get_avatar));
 
-    println!("Listening on http://{}", addr);
-
     Server::new(acceptor).serve(router).await;
 }
-static TOAST_MANAGER: AtomRef<ToastManager> = |_| ToastManager::default();
+static TOAST_MANAGER: AtomRef<ToastManager> = AtomRef(|_| ToastManager::default());
 
 fn app(cx: Scope) -> Element {
     use_shared_state_provider(cx, || GlobalState::Loading {
@@ -95,7 +92,7 @@ fn app(cx: Scope) -> Element {
         println!("Panic: {}", info);
     }));
 
-    let toast = use_atom_ref(&cx, TOAST_MANAGER);
+    let toast = use_atom_ref(cx, &TOAST_MANAGER);
 
     let state: &UseSharedState<GlobalState> = use_shared_state::<GlobalState>(cx).unwrap();
 

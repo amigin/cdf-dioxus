@@ -11,7 +11,7 @@ pub fn login_form(cx: Scope) -> Element {
 
     let global_state = use_shared_state::<GlobalState>(cx).unwrap();
 
-    let toast = use_atom_ref(&cx, crate::TOAST_MANAGER);
+    let toast = use_atom_ref(cx, &crate::TOAST_MANAGER);
 
     render! {
         table { class: "table-layout",

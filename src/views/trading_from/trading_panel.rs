@@ -1,5 +1,6 @@
 use dioxus::prelude::*;
 
+use super::pnl_calculator::*;
 use crate::views::trading_from::*;
 use crate::MOCK_CURRENCY_USD;
 pub fn trading_panel(cx: Scope) -> Element {

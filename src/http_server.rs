@@ -5,6 +5,7 @@ use dioxus_liveview::LiveViewPool;
 
 use my_nosql_contracts::DefaultsNoSqlEntity;
 use rust_extensions::slice_of_u8_utils::SliceOfU8Ext;
+use salvo::http::HeaderValue;
 use salvo::prelude::*;
 
 use crate::app::MyNoSqlReaders;
@@ -13,8 +14,10 @@ use crate::APP_CTX;
 #[handler]
 pub fn index(res: &mut Response) {
     let addr: SocketAddr = ([127, 0, 0, 1], 9001).into();
-    res.with_header("Content-Type", "text/html; charset=uft-8", true)
-        .unwrap();
+    res.headers.append(
+        "Content-Type",
+        HeaderValue::from_bytes("text/html; charset=uft-8".as_bytes()).unwrap(),
+    );
 
     res.write_body(super::static_resources::get_html(addr).into_bytes())
         .unwrap();
@@ -46,7 +49,7 @@ pub async fn get_avatar(req: &mut Request, _depot: &mut Depot, res: &mut Respons
     let id = params.get("**path");
 
     if id.is_none() {
-        res.set_status_code(StatusCode::NOT_FOUND);
+        res.status_code = Some(StatusCode::NOT_FOUND);
         res.write_body("Avatar not found".as_bytes().to_vec())
             .unwrap();
         return;
@@ -55,7 +58,7 @@ pub async fn get_avatar(req: &mut Request, _depot: &mut Depot, res: &mut Respons
     let id = id.unwrap().trim();
 
     if id == "" {
-        res.set_status_code(StatusCode::NOT_FOUND);
+        res.status_code = Some(StatusCode::NOT_FOUND);
         res.write_body("Avatar not found".as_bytes().to_vec())
             .unwrap();
         return;
@@ -72,7 +75,7 @@ pub async fn get_avatar(req: &mut Request, _depot: &mut Depot, res: &mut Respons
                 return;
             }
             Err(err) => {
-                res.set_status_code(StatusCode::NOT_FOUND);
+                res.status_code = Some(StatusCode::NOT_FOUND);
                 res.write_body(format!("Base64 decode error: {}", err).into_bytes())
                     .unwrap();
                 return;
@@ -93,7 +96,7 @@ pub async fn get_avatar(req: &mut Request, _depot: &mut Depot, res: &mut Respons
                 return;
             }
             None => {
-                res.set_status_code(StatusCode::NOT_FOUND);
+                res.status_code = Some(StatusCode::NOT_FOUND);
                 res.write_body("Avatar not found".as_bytes().to_vec())
                     .unwrap();
                 return;

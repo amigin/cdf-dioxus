@@ -11,7 +11,10 @@ dioxus = "*"
 dioxus-desktop = "*"
 dioxus-liveview = { varsion = "*", features = ["salvo"] }
 dioxus-ssr = "*"
-dioxus-free-icons = { version = "*", features = ["bootstrap", "ionicons"] }
+dioxus-free-icons = { path = "./libs/icon-packages/lib", features = [
+    "bootstrap",
+    "ionicons",
+] }
 tokio = { version = "*", features = ["full"] }
 serde = { version = "*", features = ["derive"] }
 serde_json = "*"
@@ -40,14 +43,14 @@ my-nosql-contracts = { tag = "0.1.16", git = "https://github.com/my-cfd-platform
 my-logger = { tag = "0.2.1", git = "https://github.com/MyJetTools/my-logger.git" }
 
 
-salvo = { version = "0.37.9", features = ["full", "affix", "ws"] }
+salvo = { version = "*", features = ["full", "affix", "ws"] }
 once_cell = "*"
 async-trait = "*"
 
 lazy_static = "*"
 
 rust-extensions = { tag = "0.1.3", git = "https://github.com/MyJetTools/rust-extensions.git" }
-dioxus-toast = "0.2.0"
+dioxus-toast = { path = "./libs/dioxus-toast" }
 
 
 [build-dependencies]
