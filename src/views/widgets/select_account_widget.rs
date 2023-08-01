@@ -58,7 +58,7 @@ pub fn select_account_widget<'s>(cx: Scope<'s, SelectAccountsProps<'s>>) -> Elem
                                                 main_form_state.write().hide_dialog();
                                              },
                                                 td{rowspan:"2", style:"text-align: center;",
-                                                markets_icon{}
+                                                markets_icon{ class:""}
 
                                                 }
                                                 td{

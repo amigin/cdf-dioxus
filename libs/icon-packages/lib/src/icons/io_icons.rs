@@ -2770,13 +2770,13 @@ impl IconShape for IoBarChartOutline {
         rsx! {
             path {
                 d: "M32,32V464a16,16,0,0,0,16,16H480",
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
             }
             rect {
                 height: "192",
                 rx: "20",
                 ry: "20",
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
                 width: "80",
                 x: "96",
                 y: "224",
@@ -2785,7 +2785,7 @@ impl IconShape for IoBarChartOutline {
                 height: "240",
                 rx: "20",
                 ry: "20",
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
                 width: "80",
                 x: "240",
                 y: "176",
@@ -2794,7 +2794,7 @@ impl IconShape for IoBarChartOutline {
                 height: "304",
                 rx: "20",
                 ry: "20",
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
                 width: "80",
                 x: "383.64",
                 y: "112",
@@ -2837,26 +2837,26 @@ impl IconShape for IoColorWand {
             }
             path {
                 d: "M124.1,140.1c-4.2,0-8.3-1.7-11.3-4.7l-33.9-33.9c-6.2-6.2-6.2-16.4,0-22.6s16.4-6.2,22.6,0l33.9,33.9
-	c6.3,6.2,6.3,16.4,0,22.6C132.4,138.4,128.4,140.1,124.1,140.1z",
+        c6.3,6.2,6.3,16.4,0,22.6C132.4,138.4,128.4,140.1,124.1,140.1z",
             }
             path {
                 d: "M192,112c-8.8,0-16-7.2-16-16V48c0-8.8,7.2-16,16-16s16,7.2,16,16v48C208,104.8,200.8,112,192,112z",
             }
             path {
                 d: "M259.9,140.1c-8.8,0-16-7.2-16-16c0-4.2,1.7-8.3,4.7-11.3l33.9-33.9c6.2-6.2,16.4-6.2,22.6,0c6.2,6.2,6.2,16.4,0,22.6
-	l-33.9,33.9C268.2,138.4,264.1,140.1,259.9,140.1z",
+        l-33.9,33.9C268.2,138.4,264.1,140.1,259.9,140.1z",
             }
             path {
                 d: "M90.2,309.8c-8.8,0-16-7.2-16-16c0-4.2,1.7-8.3,4.7-11.3l33.9-33.9c6.2-6.2,16.4-6.2,22.6,0s6.2,16.4,0,22.6l-33.9,33.9
-	C98.5,308.1,94.4,309.8,90.2,309.8z",
+        C98.5,308.1,94.4,309.8,90.2,309.8z",
             }
             path {
                 d: "M234.2,167c-18.4-18.7-48.5-19-67.2-0.7s-19,48.5-0.7,67.2c0.2,0.2,0.5,0.5,0.7,0.7l39.5,39.5c3.1,3.1,8.2,3.1,11.3,0
-	l55.9-55.9c3.1-3.1,3.1-8.2,0-11.3L234.2,167z",
+        l55.9-55.9c3.1-3.1,3.1-8.2,0-11.3L234.2,167z",
             }
             path {
                 d: "M457,389.8L307.6,240.4c-3.1-3.1-8.2-3.1-11.3,0l-55.9,55.9c-3.1,3.1-3.1,8.2,0,11.3L389.8,457c18.4,18.7,48.5,19,67.2,0.7
-	c18.7-18.4,19-48.5,0.7-67.2C457.5,390.3,457.3,390,457,389.8L457,389.8z",
+        c18.7-18.4,19-48.5,0.7-67.2C457.5,390.3,457.3,390,457,389.8L457,389.8z",
             }
         }
     }
@@ -17954,17 +17954,17 @@ impl IconShape for IoBriefcaseOutline {
                 height: "320",
                 rx: "48",
                 ry: "48",
-                style: "fill:none;stroke:#000;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linejoin:round;stroke-width:32px",
                 width: "448",
                 x: "32",
                 y: "128",
             }
             path {
                 d: "M144,128V96a32,32,0,0,1,32-32H336a32,32,0,0,1,32,32v32",
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
             }
             line {
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
                 x1: "480",
                 x2: "32",
                 y1: "240",
@@ -17972,7 +17972,7 @@ impl IconShape for IoBriefcaseOutline {
             }
             path {
                 d: "M320,240v24a8,8,0,0,1-8,8H200a8,8,0,0,1-8-8V240",
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
             }
         }
     }
@@ -31577,21 +31577,21 @@ impl IconShape for IoReceiptOutline {
         rsx! {
             polyline {
                 points: "160 336 160 48 192 64 224 48 255.94 64 288.31 48 320 64 351.79 48 383.72 64 416 48 448.01 64 480 48 480 272",
-                style: "fill:none;stroke:#000;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linejoin:round;stroke-width:32px",
             }
             path {
                 d: "M480,272V384a80,80,0,0,1-80,80h0a80,80,0,0,1-80-80V336H48a15.86,15.86,0,0,0-16,16c0,64,6.74,112,80,112H400",
-                style: "fill:none;stroke:#000;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linejoin:round;stroke-width:32px",
             }
             line {
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
                 x1: "224",
                 x2: "416",
                 y1: "144",
                 y2: "144",
             }
             line {
-                style: "fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
+                style: "fill:none;stroke:inherit;stroke-linecap:round;stroke-linejoin:round;stroke-width:32px",
                 x1: "288",
                 x2: "416",
                 y1: "224",

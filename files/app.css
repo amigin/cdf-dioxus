@@ -12,6 +12,7 @@ body {
     --vz-input-bg-custom: white !important;
     --accent-color: #40bb82;
     --balance-loss-color: red;
+    --inactive-icon-color: rgb(202, 202, 202);
     --text-color: black;
     --vz-primary-border-subtle: #40bb82 !important;
 }
@@ -262,7 +263,6 @@ body {
 }
 
 .left-panel-separator {
-
     margin-top: 10px;
 
 }
@@ -271,6 +271,17 @@ body {
     color: var(--label-color);
     font-size: 12px;
 
+}
+
+.left-panel-icon {
+    cursor: pointer;
+    color: var(--inactive-icon-color);
+}
+
+.left-panel-icon-active {
+    cursor: pointer;
+    color: var(--text-color);
+    filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.3));
 }
 
 #selectInstrumentModal {

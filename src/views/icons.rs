@@ -22,36 +22,18 @@ pub fn add_instrument_icon(cx: Scope) -> Element {
     })
 }
 
-pub fn markets_icon(cx: Scope) -> Element {
-    cx.render(rsx! {
-        Icon {
-            width: 24,
-            height: 24,
-            fill: "var(--label-color)",
-            icon: IoBarChartOutline
-        }
-    })
+#[inline_props]
+pub fn markets_icon<'s>(cx: Scope<'s>, class: &'s str) -> Element<'s> {
+    cx.render(rsx! { Icon { width: 24, height: 24, class: class, icon: IoBarChartOutline } })
 }
 
-pub fn portfolio_icon(cx: Scope) -> Element {
-    cx.render(rsx! {
-        Icon {
-            width: 24,
-            height: 24,
-            fill: "var(--label-color)",
-            icon: IoBriefcaseOutline
-        }
-    })
+#[inline_props]
+pub fn portfolio_icon<'s>(cx: Scope<'s>, class: &'s str) -> Element<'s> {
+    cx.render(rsx! { Icon { width: 24, height: 24, class: class, icon: IoBriefcaseOutline } })
 }
-
-pub fn history_icon(cx: Scope) -> Element {
-    cx.render(rsx! {Icon {
-        width: 24,
-        height: 24,
-        fill: "var(--label-color)",
-        icon: IoReceiptOutline
-    }
-    })
+#[inline_props]
+pub fn history_icon<'s>(cx: Scope<'s>, class: &'s str) -> Element<'s> {
+    cx.render(rsx! { Icon { width: 24, height: 24, class: class, icon: IoReceiptOutline } })
 }
 
 pub fn instrument_search_icon(cx: Scope) -> Element {
