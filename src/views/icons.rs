@@ -11,6 +11,10 @@ pub fn close_icon(cx: Scope) -> Element {
     cx.render(rsx! { Icon { width: 16, height: 16, fill: "var(--label-color)", icon: BsX } })
 }
 
+pub fn close_icon_big(cx: Scope) -> Element {
+    cx.render(rsx! { Icon { width: 24, height: 24, fill: "var(--label-color)", icon: BsX } })
+}
+
 pub fn add_instrument_icon(cx: Scope) -> Element {
     cx.render(rsx! {
         Icon {

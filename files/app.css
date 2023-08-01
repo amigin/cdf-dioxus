@@ -21,6 +21,7 @@ body {
 #main {
     overflow: hidden;
     text-align: center;
+    --left-panel-data-width: 320px;
     --terminal-left-offset: 60px;
     --terminal-top-offset: 48px;
     --total-width: 100vw;
@@ -28,6 +29,7 @@ body {
     --trading-panel-width: 320px;
     --terminal-width: calc(var(--total-width) - var(--terminal-left-offset));
     --terminal-height: calc(var(--total-height) - var(--terminal-top-offset));
+
 }
 
 #logo {
@@ -77,7 +79,11 @@ body {
     border-radius: 5px 0 0 0;
     border-left: 1px solid #ababab;
     border-top: 1px solid #ababab;
+    z-index: 1;
+    transition: left 0.5s;
 }
+
+
 
 #fav-instruments {
     text-align: left;
@@ -138,6 +144,7 @@ body {
     padding: 3px;
     text-align: left;
     background-color: #f8f7f7;
+    z-index: 2;
 }
 
 
@@ -260,6 +267,11 @@ body {
     top: var(--terminal-top-offset);
     width: var(--terminal-left-offset);
     left: 0;
+    -webkit-user-select: none;
+    /* Safari */
+    -ms-user-select: none;
+    /* IE 10 and IE 11 */
+    user-select: none;
 }
 
 .left-panel-separator {
@@ -648,4 +660,51 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
+}
+
+
+.buy-button {
+    border: 1px solid green;
+    border-top: 1px solid lightgreen;
+    border-left: 1px solid lightgreen;
+
+}
+
+.sell-button {
+    border: 1px solid darkred;
+    border-top: 1px solid red;
+    border-left: 1px solid red;
+}
+
+
+
+
+/* Left panel data */
+#left-panel-data {
+    position: absolute;
+    left: var(--terminal-left-offset);
+    top: var(--terminal-top-offset);
+    width: var(--left-panel-data-width);
+    height: var(--terminal-height);
+    z-index: 0;
+    padding: 5px;
+
+}
+
+
+#left-panel-data .header {
+    display: flex;
+}
+
+
+#left-panel-data .title {
+    display: flex;
+    font-size: 16px;
+    font-weight: bold;
+    width: 100%;
+}
+
+#left-panel-data .close {
+    display: flex;
+    cursor: pointer;
 }

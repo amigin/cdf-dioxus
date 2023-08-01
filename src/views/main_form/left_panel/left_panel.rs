@@ -1,6 +1,9 @@
 use dioxus::prelude::*;
 
-use crate::views::{icons::*, main_form::left_panel::LeftPanelState};
+use crate::views::{
+    icons::*,
+    main_form::left_panel::{left_panel_data::render_left_panel_data, LeftPanelState},
+};
 
 pub fn left_panel(cx: Scope) -> Element {
     let left_panel_state = use_state(cx, || LeftPanelState::new());
@@ -10,8 +13,12 @@ pub fn left_panel(cx: Scope) -> Element {
     let mut history_class = "left-panel-icon";
 
     match left_panel_state.get() {
-        LeftPanelState::ShowMarkets => markets_class = "left-panel-icon-active",
-        LeftPanelState::ShowPortfolio => portfolio_class = "left-panel-icon-active",
+        LeftPanelState::ShowMarkets => {
+            markets_class = "left-panel-icon-active";
+        }
+        LeftPanelState::ShowPortfolio => {
+            portfolio_class = "left-panel-icon-active";
+        }
         LeftPanelState::ShowHistory => history_class = "left-panel-icon-active",
         LeftPanelState::Nothing => {}
     }
@@ -49,6 +56,13 @@ pub fn left_panel(cx: Scope) -> Element {
             div { class: "left-panel-label", "History" }
             div { class: "left-panel-separator" }
             render_my_script { value: left_panel_state.get().is_panel_shown() }
+        }
+
+        render_left_panel_data {
+            state: left_panel_state.get().clone(),
+            on_close: move |_| {
+                left_panel_state.set(LeftPanelState::Nothing);
+            }
         }
     }
 }

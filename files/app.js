@@ -10,7 +10,7 @@ function set_focus(id) {
 
 function show_panel() {
     let el = document.getElementById("main");
-    el.style.setProperty('--show-panel-offset', "320px");
+    el.style.setProperty('--show-panel-offset', "var(--left-panel-data-width)");
 
 }
 function hide_panel() {

@@ -44,8 +44,8 @@ pub fn trading_panel(cx: Scope) -> Element {
             }
         }
 
-        button { id: "btnBuy", class: "btn btn-success btn-lg", "Buy" }
-        button { id: "btnSell", class: "btn btn-danger btn-lg", "Sell" }
+        button { id: "btnBuy", class: "btn btn-success btn-lg buy-button", "Buy" }
+        button { id: "btnSell", class: "btn btn-danger btn-lg sell-button", "Sell" }
 
         div {
             label { id: "labelSetPurchaseAt", "Purchase at" }
