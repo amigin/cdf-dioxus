@@ -29,6 +29,8 @@ body {
     --trading-panel-width: 320px;
     --terminal-width: calc(var(--total-width) - var(--terminal-left-offset));
     --terminal-height: calc(var(--total-height) - var(--terminal-top-offset));
+    --left-panel-tab-active-color: #f2f2f2;
+
 
 }
 
@@ -707,4 +709,60 @@ body {
 #left-panel-data .close {
     display: flex;
     cursor: pointer;
+}
+
+
+#markets-menu {
+    display: flex;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#markets-menu .item {
+    display: flex;
+    padding: 5px;
+    cursor: pointer;
+
+
+}
+
+#markets-menu .active {
+    display: flex;
+    padding: 5px;
+    background-color: var(--left-panel-tab-active-color);
+    border-bottom: 1px solid var(--accent-color);
+}
+
+#markets-content {
+    height: calc(var(--terminal-height) - 56px);
+    overflow-y: auto;
+}
+
+#markets-content .instrument {
+    display: flex;
+    padding: 5px;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border-color);
+}
+
+#markets-content .icon {
+    display: flex;
+    width: 45px;
+}
+
+#markets-content .id {
+    display: block;
+    font-size: 10px;
+    text-align: left;
+    color: var(--label-color);
+}
+
+#markets-content .name {
+    display: flex;
+    align-items: center;
+    width: 150px;
+}
+
+#markets-content .rate {
+    display: flex;
 }

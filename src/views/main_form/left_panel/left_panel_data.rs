@@ -1,6 +1,6 @@
 use dioxus::prelude::*;
 
-use crate::views::icons::*;
+use crate::views::{icons::*, main_form::left_panel::*};
 
 use super::LeftPanelState;
 
@@ -30,6 +30,7 @@ pub fn render_left_panel_data<'s>(cx: Scope<'s, RenderLeftPanelData<'s>>) -> Ele
                     close_icon_big {}
                 }
             }
+            left_panel_instruments {}
         }
     }
 }

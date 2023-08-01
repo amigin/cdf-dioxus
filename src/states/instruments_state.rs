@@ -19,8 +19,10 @@ impl InstrumentsState {
         self.instruments.clear();
 
         for itm in src {
-            self.instruments
-                .insert(itm.get_id().to_string(), itm.as_ref().into());
+            if !itm.trading_disabled {
+                self.instruments
+                    .insert(itm.get_id().to_string(), itm.as_ref().into());
+            }
         }
     }
 
