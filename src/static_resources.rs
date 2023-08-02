@@ -11,6 +11,7 @@ pub fn get_header_content() -> String {
 
     format!(
         r#"
+        <link rel="icon" type="image/x-icon" href="/img/favicon.png">
     <script>
         {app_js_str}
     </script>

@@ -34,7 +34,7 @@ pub fn main_form(cx: Scope) -> Element {
         div { id: "terminal-background",
             table { style: "width:100%; ",
                 tr {
-                    td { img { id: "logo", src: "/img/Logo.svg" } }
+                    td { img { id: "logo", src: "/img/Logo-green.png", style: "padding:5px" } }
                     td { style: "width:100%" }
                     td { account_balance {} }
                     td { deposit_button {} }
