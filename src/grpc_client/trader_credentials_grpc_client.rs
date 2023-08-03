@@ -104,12 +104,6 @@ impl TraderCredentialsGrpcClient {
     }
 }
 
-pub enum RegisterClientResult {
-    Ok(TraderId),
-    UserAlreadyExists,
-    TechnicalError,
-}
-
 pub enum TraderCredentialsRequestFail {
     TechnicalError,
     TraderExists,
