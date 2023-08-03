@@ -35,7 +35,7 @@ jobs:
 
       - run: sudo apt update -y
 
-    #  - run: sudo apt install javascriptcoregtk-4.1 libsoup-3.0 webkit2gtk-4.1 -y
+      - run: sudo apt install javascriptcoregtk-4.1 libsoup-3.0 webkit2gtk-4.1 -y
               
       - run: cargo build --release
 
