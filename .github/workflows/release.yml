@@ -16,6 +16,9 @@ jobs:
         with:
           toolchain: stable
 
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev          
+
       - name: Get the version
         id: get_version
         run: echo ::set-output name=VERSION::$(echo ${GITHUB_REF_NAME})
