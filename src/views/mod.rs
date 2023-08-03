@@ -10,6 +10,7 @@ pub use sign_up_form::*;
 
 pub mod widgets;
 
+mod error_mappers;
 pub mod icons;
 pub mod settings_form;
 pub mod trading_from;

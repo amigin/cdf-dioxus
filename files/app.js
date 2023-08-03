@@ -17,3 +17,5 @@ function hide_panel() {
     let el = document.getElementById("main");
     el.style.setProperty('--show-panel-offset', "0px");
 }
+
+

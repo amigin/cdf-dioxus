@@ -3,7 +3,7 @@ use crate::types::TraderId;
 pub enum GlobalState {
     NonAuthenticated,
     SignUp,
-    Loading { trader_id: TraderId },
+    Loading { trader_id: TraderId, email: String },
     Authenticated { trader_id: TraderId },
 }
 
@@ -12,13 +12,13 @@ impl GlobalState {
         self
     }
 
-    pub fn set_loading(&mut self, trader_id: TraderId) {
-        *self = Self::Loading { trader_id }
+    pub fn set_loading(&mut self, trader_id: TraderId, email: String) {
+        *self = Self::Loading { trader_id, email }
     }
 
     pub fn set_authenticated(&mut self) {
         match self {
-            Self::Loading { trader_id } => {
+            Self::Loading { trader_id, .. } => {
                 *self = Self::Authenticated {
                     trader_id: trader_id.clone(),
                 }
@@ -38,8 +38,15 @@ impl GlobalState {
     pub fn get_trader_id(&self) -> &TraderId {
         match self {
             Self::Authenticated { trader_id } => trader_id,
-            Self::Loading { trader_id } => trader_id,
+            Self::Loading { trader_id, .. } => trader_id,
             _ => panic!("GlobalState::get_trader_id() called on non-authenticated state"),
+        }
+    }
+
+    pub fn get_email(&self) -> String {
+        match self {
+            Self::Loading { email, .. } => email.clone(),
+            _ => panic!("Email can be retrieved only from loading state"),
         }
     }
 

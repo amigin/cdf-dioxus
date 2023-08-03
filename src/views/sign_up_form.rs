@@ -1,19 +1,38 @@
 use dioxus::prelude::*;
-use my_telemetry::MyTelemetryContext;
+use dioxus_toast::ToastManager;
+use fermi::{use_atom_ref, UseAtomRef};
 
-use crate::{
-    lang::LANG, states::GlobalState, trader_credentials_grpc::VerifyTraderPasswordRequest,
-};
+use crate::{grpc_client::TraderCredentialsGrpcClient, lang::LANG, states::GlobalState};
 
 pub fn sign_up_form(cx: Scope) -> Element {
-    let user_name = use_state(cx, || "".to_string());
+    let email = use_state(cx, || "".to_string());
     let password = use_state(cx, || "".to_string());
+    let password_again = use_state(cx, || "".to_string());
 
     let global_state = use_shared_state::<GlobalState>(cx).unwrap();
 
+    let sign_up_form = &LANG.sign_up_form;
+    let toast = use_atom_ref(cx, &crate::TOAST_MANAGER);
+
+    let password_again_element = use_state(cx, || None);
+
+    let (passwords_do_not_match_phrase, class_name, mut button_disable) =
+        if password.get() != password_again.get() {
+            let result =
+                rsx!( div { style: "color:red", "{LANG.toast_errors.passwords_do_not_match}" } );
+            (result, "validation-error", true)
+        } else {
+            (rsx!(div {}), "", false)
+        };
+
+    if !crate::validators::is_email(email.get()) {
+        button_disable = true;
+    }
+
     render! {
+        div { class: "login-logo", img { src: "/img/Logo-green.png" } }
         table { class: "table-layout",
-            tr { style: "width:100%",
+            tr { style: "width:100%;height: 100vh;",
                 td {
 
                     div { class: "card", style: "width: 400px; margin: auto; ",
@@ -39,36 +58,43 @@ pub fn sign_up_form(cx: Scope) -> Element {
                             }
                             div { style: "text-align: left;margin-top: 30px;",
 
-                                label { class: "form-label", "Username" }
+                                label { class: "form-label", "{sign_up_form.email}" }
                                 input {
+                                    id: "email",
                                     r#type: "email",
                                     class: "form-control",
-                                    placeholder: "email",
+                                    placeholder: "{sign_up_form.email}",
                                     oninput: move |e| {
-                                        user_name.set(e.value.clone());
+                                        email.set(e.value.trim().to_lowercase());
                                     }
                                 }
 
-                                div {
-                                    label { class: "form-label", "Password" }
+                                div { style: "margin-top:10px",
+                                    label { class: "form-label", "{sign_up_form.password}" }
                                     input {
-                                        r#type: "{LANG.password}",
+                                        r#type: "{sign_up_form.password}",
                                         class: "form-control",
-                                        placeholder: "{LANG.password}",
+                                        placeholder: "{sign_up_form.password}",
                                         oninput: move |e| {
                                             password.set(e.value.clone());
                                         }
                                     }
                                 }
 
-                                div {
-                                    label { class: "form-label", "Password again" }
+                                div { style: "margin-top:10px",
+                                    label { class: "form-label", "{sign_up_form.password_again}" }
+                                    passwords_do_not_match_phrase,
                                     input {
-                                        r#type: "{LANG.password}",
-                                        class: "form-control",
-                                        placeholder: "{LANG.password}",
+                                        r#type: "{sign_up_form.password}",
+                                        class: "form-control {class_name}",
+                                        placeholder: "{sign_up_form.password_again}",
+
+                                        onmounted: move |e| {
+                                            password_again_element.set(Some(e.inner().clone()));
+                                        },
+
                                         oninput: move |e| {
-                                            password.set(e.value.clone());
+                                            password_again.set(e.value.clone());
                                         }
                                     }
                                 }
@@ -82,10 +108,13 @@ pub fn sign_up_form(cx: Scope) -> Element {
 
                                 class: "btn btn-success",
 
+                                disabled: button_disable,
+
                                 onclick: move |_| {
-                                    do_request(cx, user_name.get(), password.get(), global_state);
+                                    let password = password.get();
+                                    do_request(cx, email.get(), password, global_state, toast);
                                 },
-                                "SIGN UP"
+                                "{LANG.sign_up}"
                             }
 
                             div { style: "text-align: center; margin-top: 30px;",
@@ -96,48 +125,35 @@ pub fn sign_up_form(cx: Scope) -> Element {
                 }
             }
         }
+        script { "set_focus('email');" }
     }
 }
 
 fn do_request(
     cx: &Scoped,
-    username: &str,
+    email: &str,
     password: &str,
     global_state: &UseSharedState<GlobalState>,
+    toast: &UseAtomRef<ToastManager>,
 ) {
-    let username = username.to_string();
+    let email = email.to_string();
     let password = password.to_string();
 
     let global_state = global_state.to_owned();
 
+    let toast = toast.to_owned();
+
     cx.spawn(async move {
-        let result = tokio::spawn(async move {
-            let app = crate::APP_CTX.get().await;
+        let result =
+            TraderCredentialsGrpcClient::register_new_client(email.to_string(), password).await;
 
-            let result = app
-                .trader_credentials_grpc_client
-                .verify_password(
-                    VerifyTraderPasswordRequest {
-                        email: username,
-                        password: password,
-                        brand: app.get_brand().await,
-                    },
-                    &MyTelemetryContext::new(),
-                )
-                .await
-                .unwrap();
-
-            result.trader_id
-
-            //http::login(&username, &password).await
-        })
-        .await
-        .unwrap();
-
-        if let Some(trader_id) = result {
-            global_state.write().set_loading(trader_id.into());
-        } else {
-            println!("Invalid Username or password");
+        match result {
+            Ok(trader_id) => {
+                global_state.write().set_loading(trader_id, email);
+            }
+            Err(err) => {
+                err.throw_toast(&LANG.toast_errors.registration_fail, &toast);
+            }
         }
     });
 }

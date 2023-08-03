@@ -2,7 +2,9 @@ use crate::{states::*, APP_CTX};
 use dioxus::prelude::*;
 use my_nosql_contracts::TradingInstrumentNoSqlEntity;
 pub fn loading_form(cx: Scope) -> Element {
-    let global_state = use_shared_state::<GlobalState>(cx).unwrap().to_owned();
+    let global_state = use_shared_state::<GlobalState>(cx).unwrap();
+
+    let global_state_owned = global_state.to_owned();
 
     let accounts_state = use_shared_state::<AccountsState>(cx).unwrap().to_owned();
 
@@ -12,7 +14,11 @@ pub fn loading_form(cx: Scope) -> Element {
 
     let instruments_state = use_shared_state::<InstrumentsState>(cx).unwrap().to_owned();
 
-    let trader_id = global_state.read().get_trader_id().clone();
+    let (trader_id, email) = {
+        let read = global_state.read();
+        (read.get_trader_id().clone(), read.get_email())
+    };
+
     cx.spawn(async move {
         let accounts =
             crate::grpc_client::AccountsManagerGrpcClient::get_list_of_accounts(trader_id.clone())
@@ -50,7 +56,7 @@ pub fn loading_form(cx: Scope) -> Element {
             instruments_state.write().set_instruments(instruments);
         }
 
-        global_state.write().set_authenticated();
+        global_state_owned.write().set_authenticated();
     });
 
     //todo!("Implement working design")
@@ -62,5 +68,7 @@ pub fn loading_form(cx: Scope) -> Element {
                 }
             }
         }
+
+        script { "localStorage.setItem('email', '{email}')" }
     }
 }

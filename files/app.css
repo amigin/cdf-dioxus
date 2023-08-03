@@ -39,6 +39,23 @@ body {
 }
 
 
+.validation-error {
+    border: 1px solid red !important;
+}
+
+
+.login-logo {
+    left: 0;
+    position: absolute;
+    top: 50px;
+    right: 0;
+}
+
+.login-logo img {
+    width: 300px;
+}
+
+
 /* Bootstrap overrides group */
 
 .input-group-text-sm {

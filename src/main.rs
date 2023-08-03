@@ -10,7 +10,6 @@ use fermi::{use_atom_ref, use_init_atom_root, AtomRef};
 use salvo::affix;
 use salvo::prelude::*;
 use salvo::serve_static::StaticDir;
-
 mod actions;
 mod app;
 mod grpc_client;
@@ -20,6 +19,7 @@ mod settings_reader;
 mod states;
 mod static_resources;
 mod types;
+mod validators;
 mod views;
 
 pub const MOCK_CURRENCY_USD: &'static str = "$";
@@ -72,9 +72,7 @@ async fn main() {
 static TOAST_MANAGER: AtomRef<ToastManager> = AtomRef(|_| ToastManager::default());
 
 fn app(cx: Scope) -> Element {
-    use_shared_state_provider(cx, || GlobalState::Loading {
-        trader_id: "2808ee4d-4231-4697-b892-eb95741c811c".into(),
-    });
+    use_shared_state_provider(cx, || GlobalState::NonAuthenticated);
 
     //use_shared_state_provider(cx, || GlobalState::NonAuthenticated);
 

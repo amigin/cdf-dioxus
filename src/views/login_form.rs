@@ -1,21 +1,87 @@
+use std::rc::Rc;
+
 use dioxus::prelude::*;
-use dioxus_toast::{ToastInfo, ToastManager};
+use dioxus_toast::ToastManager;
 
 use fermi::{use_atom_ref, UseAtomRef};
 
 use crate::{grpc_client::TraderCredentialsGrpcClient, lang::LANG, states::GlobalState};
 
 pub fn login_form(cx: Scope) -> Element {
-    let user_name = use_state(cx, || "".to_string());
-    let password = use_state(cx, || "".to_string());
+    let email_element: &UseState<Option<Rc<MountedData>>> = use_state(cx, || None);
+
+    let email_element_owned = email_element.to_owned();
+
+    let password_element: &UseState<Option<Rc<MountedData>>> = use_state(cx, || None);
+
+    let password_element_owned = password_element.to_owned();
+
+    let eval = use_eval(cx);
+    let eval_owned = eval.to_owned();
+    let email_value = use_state(cx, || "".to_string());
+    let email_value_owned = email_value.to_owned();
+
+    let we_got_result = use_state(cx, || false);
+
+    let we_got_result_owned = we_got_result.to_owned();
+
+    cx.spawn(async move {
+        if *we_got_result_owned.get() {
+            return;
+        }
+
+        let eval = eval_owned(r#"return localStorage.getItem('email');"#).unwrap();
+
+        let result = eval.await;
+
+        we_got_result_owned.set(true);
+
+        match result {
+            Ok(result) => {
+                if let Some(value) = result.as_str() {
+                    email_value_owned.set(value.to_string());
+                    if let Some(el) = password_element_owned.get() {
+                        el.set_focus(true);
+                    }
+                    return;
+                }
+            }
+            Err(err) => {
+                println!("Error: {:?}", err);
+            }
+        }
+
+        if let Some(el) = email_element_owned.get() {
+            el.set_focus(true);
+        }
+    });
+
+    let password_value = use_state(cx, || "".to_string());
+
+    let request_is_going_on = use_state(cx, || false);
 
     let global_state = use_shared_state::<GlobalState>(cx).unwrap();
 
     let toast = use_atom_ref(cx, &crate::TOAST_MANAGER);
 
+    let mut button_is_disabled = false;
+
+    if !crate::validators::is_email(email_value.get()) {
+        button_is_disabled = true;
+    }
+
+    if password_value.get().len() == 0 {
+        button_is_disabled = true;
+    }
+
+    if *request_is_going_on.get() {
+        button_is_disabled = true;
+    }
+
     render! {
+        div { class: "login-logo", img { src: "/img/Logo-green.png" } }
         table { class: "table-layout",
-            tr { style: "width:100%",
+            tr { style: "width:100%;height: 100vh;",
                 td {
 
                     div { class: "card", style: "width: 400px; margin: auto; ",
@@ -43,22 +109,33 @@ pub fn login_form(cx: Scope) -> Element {
 
                                 label { class: "form-label", "Username" }
                                 input {
+                                    id: "email",
                                     r#type: "email",
                                     class: "form-control",
                                     placeholder: "email",
+                                    value: "{email_value.get()}",
+
+                                    onmounted: move |e| {
+                                        email_element.set(Some(e.inner().clone()));
+                                    },
+
                                     oninput: move |e| {
-                                        user_name.set(e.value.clone());
+                                        email_value.set(e.value.trim().to_lowercase());
                                     }
                                 }
 
                                 div {
                                     label { class: "form-label", "Password" }
                                     input {
+                                        id: "password",
                                         r#type: "{LANG.password}",
                                         class: "form-control",
                                         placeholder: "{LANG.password}",
+                                        onmounted: move |e| {
+                                            password_element.set(Some(e.inner().clone()));
+                                        },
                                         oninput: move |e| {
-                                            password.set(e.value.clone());
+                                            password_value.set(e.value.to_string());
                                         }
                                     }
                                 }
@@ -71,9 +148,18 @@ pub fn login_form(cx: Scope) -> Element {
                                 style: "width:100%; margin-top: 30px;",
 
                                 class: "btn btn-success",
+                                disabled: button_is_disabled,
 
                                 onclick: move |_| {
-                                    do_request(cx, user_name.get(), password.get(), global_state, toast);
+                                    request_is_going_on.set(true);
+                                    do_request(
+                                        cx,
+                                        email_value.get(),
+                                        password_value.get(),
+                                        global_state,
+                                        toast,
+                                        request_is_going_on,
+                                    );
                                 },
                                 "{LANG.login}"
                             }
@@ -91,30 +177,33 @@ pub fn login_form(cx: Scope) -> Element {
 
 fn do_request(
     cx: &Scoped,
-    username: &str,
+    email: &str,
     password: &str,
     global_state: &UseSharedState<GlobalState>,
     toast: &UseAtomRef<ToastManager>,
+    request_is_going_on: &UseState<bool>,
 ) {
-    let username = username.to_string();
+    let email = email.to_string();
     let password = password.to_string();
 
     let global_state = global_state.to_owned();
 
     let toast = toast.to_owned();
 
+    let request_is_going_on = request_is_going_on.to_owned();
+
     cx.spawn(async move {
-        let result = TraderCredentialsGrpcClient::check_password(username, password).await;
+        let result = TraderCredentialsGrpcClient::check_password(email.clone(), password).await;
 
         match result {
             Ok(trader_id) => {
-                println!("Trader id: {}", trader_id);
-                global_state.write().set_loading(trader_id);
+                global_state
+                    .write()
+                    .set_loading(trader_id, email.to_string());
             }
             Err(err) => {
-                toast
-                    .write()
-                    .popup(ToastInfo::error(err.as_str(), &LANG.login_failed));
+                request_is_going_on.set(false);
+                err.throw_toast(&LANG.toast_errors.authentication_fail, &toast);
             }
         }
     });
