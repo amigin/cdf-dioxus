@@ -1,7 +1,13 @@
+FROM ubuntu:20.04 as builder
+
+RUN apt-get update && \
+    apt-get install -y libssl-dev
+
 FROM rust:slim
-RUN apt-get update && apt-get install -y libssl-dev
-RUN ln -s /usr/lib/x86_64-linux-gnu/libssl.so.1.0.0 /usr/lib/x86_64-linux-gnu/libssl.so.3
+
+# Copy OpenSSL libraries from Ubuntu 20.04 image
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libssl.so.1.1 /usr/lib/x86_64-linux-gnu/
+COPY --from=builder /usr/lib/x86_64-linux-gnu/libcrypto.so.1.1 /usr/lib/x86_64-linux-gnu/
+
 COPY ./target/release/web-terminal ./target/release/web-terminal
-COPY ./files ./files 
-ENV LD_LIBRARY_PATH=/usr/local/lib64:$LD_LIBRARY_PATH
 ENTRYPOINT ["./target/release/web-terminal"]
