@@ -2,6 +2,7 @@ use crate::types::TraderId;
 
 pub enum GlobalState {
     NonAuthenticated,
+    ResetPassword,
     SignUp,
     Loading { trader_id: TraderId, email: String },
     Authenticated { trader_id: TraderId },
@@ -14,6 +15,10 @@ impl GlobalState {
 
     pub fn set_loading(&mut self, trader_id: TraderId, email: String) {
         *self = Self::Loading { trader_id, email }
+    }
+
+    pub fn set_reset_password(&mut self) {
+        *self = Self::ResetPassword;
     }
 
     pub fn set_authenticated(&mut self) {
@@ -31,7 +36,7 @@ impl GlobalState {
         *self = Self::SignUp;
     }
 
-    pub fn set_root(&mut self) {
+    pub fn set_login(&mut self) {
         *self = Self::NonAuthenticated;
     }
 

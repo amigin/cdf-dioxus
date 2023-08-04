@@ -61,7 +61,7 @@ pub fn loading_form(cx: Scope) -> Element {
 
     //todo!("Implement working design")
     render! {
-        table { style: "width:100%; height:100%;",
+        table { style: "width:100%; height:1vh;",
             tr {
                 td {
                     div { class: "spinner-border", role: "status", span { class: "visually-hidden", "Loading..." } }

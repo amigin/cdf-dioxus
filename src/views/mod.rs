@@ -12,5 +12,9 @@ pub mod widgets;
 
 mod error_mappers;
 pub mod icons;
+mod reset_password_form;
 pub mod settings_form;
 pub mod trading_from;
+pub use reset_password_form::*;
+mod forgot_password_link;
+pub use forgot_password_link::*;

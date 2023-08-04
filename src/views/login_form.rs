@@ -5,6 +5,8 @@ use dioxus_toast::ToastManager;
 
 use fermi::{use_atom_ref, UseAtomRef};
 
+use super::*;
+
 use crate::{grpc_client::TraderCredentialsGrpcClient, lang::LANG, states::GlobalState};
 
 pub fn login_form(cx: Scope) -> Element {
@@ -164,9 +166,7 @@ pub fn login_form(cx: Scope) -> Element {
                                 "{LANG.login}"
                             }
 
-                            div { style: "text-align: center; margin-top: 30px;",
-                                a { href: "#", "{LANG.forgot_password}?" }
-                            }
+                            forgot_password_link {}
                         }
                     }
                 }

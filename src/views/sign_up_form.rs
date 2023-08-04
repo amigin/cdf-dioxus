@@ -1,3 +1,4 @@
+use super::*;
 use dioxus::prelude::*;
 use dioxus_toast::ToastManager;
 use fermi::{use_atom_ref, UseAtomRef};
@@ -45,7 +46,7 @@ pub fn sign_up_form(cx: Scope) -> Element {
                                     class: "btn btn-light",
                                     onclick: move |_| {
                                         let global_state = global_state.to_owned();
-                                        global_state.write().set_root();
+                                        global_state.write().set_login();
                                     },
                                     "{LANG.login}"
                                 }
@@ -117,9 +118,7 @@ pub fn sign_up_form(cx: Scope) -> Element {
                                 "{LANG.sign_up}"
                             }
 
-                            div { style: "text-align: center; margin-top: 30px;",
-                                a { href: "#", "{LANG.forgot_password}?" }
-                            }
+                            forgot_password_link {}
                         }
                     }
                 }

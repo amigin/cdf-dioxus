@@ -15,5 +15,17 @@ pub fn is_email(src: &str) -> bool {
         return false;
     }
 
-    true
+    let dot_index = src.find(".");
+
+    if dot_index.is_none() {
+        return false;
+    }
+
+    let dot_index = dot_index.unwrap();
+
+    if dot_index == src.len() - 1 {
+        return false;
+    }
+
+    dot_index > at_index
 }

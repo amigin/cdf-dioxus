@@ -26,6 +26,14 @@ lazy_static::lazy_static! {
             invalid_user_name_or_password: "Invalid user name or password".to_string(),
             user_not_found: "User not found".to_string(),
             password_is_wrong: "Password is wrong".to_string(),
+        },
+
+        reset_password_form: ResetPasswordForm{
+            reset_password_title: "Reset Password".to_string(),
+            to_begin_changing_password_under_title: "To begin changing your password, please enter your e-mail".to_string(),
+            email_input: "Email".to_string(),
+            send_recovery_code: "Send recovery code".to_string(),
+            back_to_login: "Back to login".to_string()
         }
 
 
@@ -43,6 +51,7 @@ pub struct Language {
     pub pnl_calculator: PnlCalculator,
     pub sign_up_form: SignUpForm,
     pub toast_errors: ToastErrors,
+    pub reset_password_form: ResetPasswordForm,
 }
 
 pub struct PnlCalculator {
@@ -53,6 +62,14 @@ pub struct SignUpForm {
     pub email: String,
     pub password: String,
     pub password_again: String,
+}
+
+pub struct ResetPasswordForm {
+    pub reset_password_title: String,
+    pub to_begin_changing_password_under_title: String,
+    pub email_input: String,
+    pub send_recovery_code: String,
+    pub back_to_login: String,
 }
 
 pub struct ToastErrors {

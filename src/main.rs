@@ -110,5 +110,9 @@ fn app(cx: Scope) -> Element {
             dioxus_toast::ToastFrame { manager: toast }
             main_form {}
         },
+        GlobalState::ResetPassword => render! {
+            dioxus_toast::ToastFrame { manager: toast }
+            reset_password_form {}
+        },
     }
 }

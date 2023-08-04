@@ -784,3 +784,11 @@ body {
 #markets-content .rate {
     display: flex;
 }
+
+
+
+#reset-password-form {
+    width: 400px;
+    text-align: left;
+    margin: auto;
+}
