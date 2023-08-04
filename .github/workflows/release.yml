@@ -29,9 +29,8 @@ jobs:
       - name: Install Protoc
         uses: arduino/setup-protoc@v1      
 
-      - run: wget http://nz2.archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1l-1ubuntu1.2_amd64.deb
-      - run: sudo dpkg -i libssl1.1_1.1.1l-1ubuntu1.2_amd64.deb
-      
+      - run: openssl version
+
       - run: sudo apt install build-essential -y
       - run: sudo apt install libglib2.0-dev -y
       - run: sudo apt install pkg-config libssl-dev -y
