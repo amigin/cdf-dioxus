@@ -1,6 +1,6 @@
 FROM rust:slim
 
-RUN sudo apt-get install libssl-dev -y
+RUN apt-get install libssl-dev -y
 
 COPY ./target/release/web-terminal ./target/release/web-terminal
 COPY ./files ./target/release/files
