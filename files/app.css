@@ -93,6 +93,7 @@ body {
     height: calc(var(--total-height) - var(--terminal-top-offset));
     left: calc(var(--terminal-left-offset) + var(--show-panel-offset));
     top: calc(var(--terminal-top-offset));
+    padding-right: var(--trading-panel-width);
     box-shadow: 0 0 25px lightgray;
     background-color: #f8f7f7;
     border-radius: 5px 0 0 0;
