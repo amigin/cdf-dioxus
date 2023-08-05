@@ -74,7 +74,9 @@ async fn main() {
 static TOAST_MANAGER: AtomRef<ToastManager> = AtomRef(|_| ToastManager::default());
 
 fn app(cx: Scope) -> Element {
-    use_shared_state_provider(cx, || GlobalState::NonAuthenticated);
+    use_shared_state_provider(cx, || GlobalState::NonAuthenticated {
+        reset_session: false,
+    });
 
     //use_shared_state_provider(cx, || GlobalState::NonAuthenticated);
 
@@ -96,9 +98,9 @@ fn app(cx: Scope) -> Element {
     let state: &UseSharedState<GlobalState> = use_shared_state::<GlobalState>(cx).unwrap();
 
     match state.read().as_ref() {
-        GlobalState::NonAuthenticated => render! {
+        GlobalState::NonAuthenticated { reset_session } => render! {
             dioxus_toast::ToastFrame { manager: toast }
-            login_form {}
+            login_form { reset_session: *reset_session }
         },
         GlobalState::SignUp => render!(
             dioxus_toast::ToastFrame { manager: toast }

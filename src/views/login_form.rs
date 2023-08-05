@@ -1,5 +1,3 @@
-use std::rc::Rc;
-
 use dioxus::prelude::*;
 use dioxus_toast::ToastManager;
 
@@ -13,19 +11,18 @@ use crate::{
     states::GlobalState, APP_CTX,
 };
 
-pub fn login_form(cx: Scope) -> Element {
-    let email_element: &UseState<Option<Rc<MountedData>>> = use_state(cx, || None);
+pub enum LoginFormState {
+    LoadingDataFromBrowser,
+    RenderLoginForm(String),
+}
+#[derive(Props, PartialEq)]
+pub struct LoginFormProps {
+    pub reset_session: bool,
+}
 
-    let email_element_owned = email_element.to_owned();
-
-    let password_element: &UseState<Option<Rc<MountedData>>> = use_state(cx, || None);
-
-    let password_element_owned = password_element.to_owned();
-
+pub fn login_form<'s>(cx: Scope<'s, LoginFormProps>) -> Element<'s> {
     let eval = use_eval(cx);
     let eval_owned = eval.to_owned();
-    let email_value = use_state(cx, || "".to_string());
-    let email_value_owned = email_value.to_owned();
 
     let we_got_result = use_state(cx, || false);
 
@@ -35,73 +32,110 @@ pub fn login_form(cx: Scope) -> Element {
 
     let global_state_owned = global_state.to_owned();
 
-    cx.spawn(async move {
-        if *we_got_result_owned.get() {
-            return;
-        }
+    let login_form_state = use_state(cx, || LoginFormState::LoadingDataFromBrowser);
 
-        let eval = eval_owned(
-            r#"
-        let email = localStorage.getItem('email');
-        let session = localStorage.getItem('session_id');
-        if (!email){
-            email = '';
-        }
-        if (!session){
-            session = '';
-        }
+    let login_form_state_owned = login_form_state.to_owned();
 
-        return email + ' ' + session;
-        "#,
-        )
-        .unwrap();
-
-        let result = eval.await;
-
-        we_got_result_owned.set(true);
-
-        match result {
-            Ok(result) => {
-                if let Some(value) = result.as_str() {
-                    let parts: Vec<&'_ str> = value.split(' ').collect();
-
-                    let email = *parts.get(0).unwrap();
-
-                    if parts.len() > 1 {
-                        let session_id = *parts.get(1).unwrap();
-
-                        let token =
-                            SessionToken::from_string(session_id, &APP_CTX.get_aes_key().await);
-
-                        if let Ok(token) = token {
-                            if !token.is_expired(DateTimeAsMicroseconds::now()) {
-                                global_state_owned.write().set_loading(
-                                    token.trader_id.into(),
-                                    "".to_string(),
-                                    "".to_string(),
-                                );
-                            }
-                        }
-                    }
-
-                    email_value_owned.set(email.to_string());
-                    if let Some(el) = password_element_owned.get() {
-                        el.set_focus(true);
-                    }
+    match login_form_state.get() {
+        LoginFormState::LoadingDataFromBrowser => {
+            cx.spawn(async move {
+                if *we_got_result_owned.get() {
                     return;
                 }
-            }
-            Err(err) => {
-                println!("Error: {:?}", err);
+
+                let eval = eval_owned(
+                    r#"
+                let email = localStorage.getItem('email');
+                let session = localStorage.getItem('session_id');
+                if (!email){
+                    email = '-';
+                }
+                if (!session){
+                    session = '-';
+                }
+        
+                return email + ' ' + session;
+                "#,
+                )
+                .unwrap();
+
+                let result = eval.await;
+
+                we_got_result_owned.set(true);
+
+                match result {
+                    Ok(result) => {
+                        if let Some(value) = result.as_str() {
+                            let parts: Vec<&'_ str> = value.split(' ').collect();
+
+                            let email = *parts.get(0).unwrap();
+
+                            if parts.len() > 1 {
+                                let session_id = *parts.get(1).unwrap();
+
+                                if session_id.len() > 2 {
+                                    let token = SessionToken::from_string(
+                                        session_id,
+                                        &APP_CTX.get_aes_key().await,
+                                    );
+
+                                    if let Ok(token) = token {
+                                        if !token.is_expired(DateTimeAsMicroseconds::now()) {
+                                            global_state_owned.write().set_loading(
+                                                token.trader_id.into(),
+                                                "".to_string(),
+                                                "".to_string(),
+                                            );
+                                        }
+                                    }
+                                }
+                            }
+
+                            if email == "-" {
+                                login_form_state_owned
+                                    .set(LoginFormState::RenderLoginForm("".to_string()));
+                            } else {
+                                login_form_state_owned
+                                    .set(LoginFormState::RenderLoginForm(email.to_string()));
+                            }
+                            return;
+                        }
+                    }
+                    Err(err) => {
+                        println!("Error: {:?}", err);
+                    }
+                }
+
+                login_form_state_owned.set(LoginFormState::RenderLoginForm("".to_string()));
+            });
+
+            let script = if cx.props.reset_session {
+                rsx! { script { "localStorage.removeItem('session_id');" } }
+            } else {
+                rsx!(div {})
+            };
+
+            render! {
+                h1 { "Initializing..." }
+                script
             }
         }
-
-        if let Some(el) = email_element_owned.get() {
-            el.set_focus(true);
+        LoginFormState::RenderLoginForm(email) => {
+            render! { render_login_form { email: email.clone() } }
         }
-    });
+    }
+}
 
+#[derive(Props, PartialEq)]
+pub struct RenderLoginFormProps {
+    pub email: String,
+}
+
+fn render_login_form<'s>(cx: Scope<'s, RenderLoginFormProps>) -> Element<'s> {
+    let email_value = use_state(cx, || cx.props.email.to_string());
     let password_value = use_state(cx, || "".to_string());
+
+    let global_state = use_shared_state::<GlobalState>(cx).unwrap();
 
     let request_is_going_on = use_state(cx, || false);
 
@@ -120,6 +154,12 @@ pub fn login_form(cx: Scope) -> Element {
     if *request_is_going_on.get() {
         button_is_disabled = true;
     }
+
+    let set_focus_js = if cx.props.email.len() < 2 {
+        "set_focus('email');"
+    } else {
+        "set_focus('password');"
+    };
 
     render! {
         div { class: "login-logo", img { src: "/img/Logo-green.png" } }
@@ -158,10 +198,6 @@ pub fn login_form(cx: Scope) -> Element {
                                     placeholder: "email",
                                     value: "{email_value.get()}",
 
-                                    onmounted: move |e| {
-                                        email_element.set(Some(e.inner().clone()));
-                                    },
-
                                     oninput: move |e| {
                                         email_value.set(e.value.trim().to_lowercase());
                                     }
@@ -174,9 +210,6 @@ pub fn login_form(cx: Scope) -> Element {
                                         r#type: "{LANG.password}",
                                         class: "form-control",
                                         placeholder: "{LANG.password}",
-                                        onmounted: move |e| {
-                                            password_element.set(Some(e.inner().clone()));
-                                        },
                                         oninput: move |e| {
                                             password_value.set(e.value.to_string());
                                         }
@@ -208,6 +241,7 @@ pub fn login_form(cx: Scope) -> Element {
                             }
 
                             forgot_password_link {}
+                            script { set_focus_js }
                         }
                     }
                 }
@@ -216,8 +250,8 @@ pub fn login_form(cx: Scope) -> Element {
     }
 }
 
-fn do_request(
-    cx: &Scoped,
+fn do_request<'s>(
+    cx: &'s Scoped<'s, RenderLoginFormProps>,
     email: &str,
     password: &str,
     global_state: &UseSharedState<GlobalState>,

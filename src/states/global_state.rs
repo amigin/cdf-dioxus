@@ -2,7 +2,9 @@ use crate::types::TraderId;
 
 #[derive(Debug)]
 pub enum GlobalState {
-    NonAuthenticated,
+    NonAuthenticated {
+        reset_session: bool,
+    },
     ResetPassword,
     SignUp,
     Loading {
@@ -51,7 +53,9 @@ impl GlobalState {
     }
 
     pub fn set_login(&mut self) {
-        *self = Self::NonAuthenticated;
+        *self = Self::NonAuthenticated {
+            reset_session: false,
+        };
     }
 
     pub fn get_trader_id(&self) -> &TraderId {
@@ -70,6 +74,8 @@ impl GlobalState {
     }
 
     pub fn logout(&mut self) {
-        *self = Self::NonAuthenticated;
+        *self = Self::NonAuthenticated {
+            reset_session: true,
+        };
     }
 }
