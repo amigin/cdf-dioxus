@@ -1,8 +1,8 @@
 use std::sync::Arc;
 
+use encryption::aes::AesKey;
 use my_no_sql_tcp_reader::{MyNoSqlDataReader, MyNoSqlTcpConnection};
 use my_nosql_contracts::*;
-use tokio::sync::RwLock;
 
 use crate::{grpc_client::*, settings_reader::SettingsReader};
 
@@ -68,13 +68,13 @@ impl AppContextInner {
 }
 
 pub struct AppContext {
-    pub inner: RwLock<Option<Arc<AppContextInner>>>,
+    pub inner: tokio::sync::RwLock<Option<Arc<AppContextInner>>>,
 }
 
 impl AppContext {
     pub fn new() -> Self {
         Self {
-            inner: RwLock::new(None),
+            inner: tokio::sync::RwLock::new(None),
         }
     }
 
@@ -92,5 +92,10 @@ impl AppContext {
     pub async fn get_my_no_sql_readers(&self) -> Arc<MyNoSqlReaders> {
         let inner = self.inner.read().await;
         inner.as_ref().unwrap().readers.clone()
+    }
+
+    pub async fn get_aes_key(&self) -> AesKey {
+        let inner = self.inner.read().await;
+        inner.as_ref().unwrap().settings_reader.get_aes_key().await
     }
 }

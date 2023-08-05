@@ -4,10 +4,14 @@ use dioxus::prelude::*;
 use dioxus_toast::ToastManager;
 
 use fermi::{use_atom_ref, UseAtomRef};
+use rust_extensions::date_time::DateTimeAsMicroseconds;
 
 use super::*;
 
-use crate::{grpc_client::TraderCredentialsGrpcClient, lang::LANG, states::GlobalState};
+use crate::{
+    grpc_client::TraderCredentialsGrpcClient, lang::LANG, session_token::SessionToken,
+    states::GlobalState, APP_CTX,
+};
 
 pub fn login_form(cx: Scope) -> Element {
     let email_element: &UseState<Option<Rc<MountedData>>> = use_state(cx, || None);
@@ -27,12 +31,30 @@ pub fn login_form(cx: Scope) -> Element {
 
     let we_got_result_owned = we_got_result.to_owned();
 
+    let global_state = use_shared_state::<GlobalState>(cx).unwrap();
+
+    let global_state_owned = global_state.to_owned();
+
     cx.spawn(async move {
         if *we_got_result_owned.get() {
             return;
         }
 
-        let eval = eval_owned(r#"return localStorage.getItem('email');"#).unwrap();
+        let eval = eval_owned(
+            r#"
+        let email = localStorage.getItem('email');
+        let session = localStorage.getItem('session_id');
+        if (!email){
+            email = '';
+        }
+        if (!session){
+            session = '';
+        }
+
+        return email + ' ' + session;
+        "#,
+        )
+        .unwrap();
 
         let result = eval.await;
 
@@ -41,7 +63,28 @@ pub fn login_form(cx: Scope) -> Element {
         match result {
             Ok(result) => {
                 if let Some(value) = result.as_str() {
-                    email_value_owned.set(value.to_string());
+                    let parts: Vec<&'_ str> = value.split(' ').collect();
+
+                    let email = *parts.get(0).unwrap();
+
+                    if parts.len() > 1 {
+                        let session_id = *parts.get(1).unwrap();
+
+                        let token =
+                            SessionToken::from_string(session_id, &APP_CTX.get_aes_key().await);
+
+                        if let Ok(token) = token {
+                            if !token.is_expired(DateTimeAsMicroseconds::now()) {
+                                global_state_owned.write().set_loading(
+                                    token.trader_id.into(),
+                                    "".to_string(),
+                                    "".to_string(),
+                                );
+                            }
+                        }
+                    }
+
+                    email_value_owned.set(email.to_string());
                     if let Some(el) = password_element_owned.get() {
                         el.set_focus(true);
                     }
@@ -61,8 +104,6 @@ pub fn login_form(cx: Scope) -> Element {
     let password_value = use_state(cx, || "".to_string());
 
     let request_is_going_on = use_state(cx, || false);
-
-    let global_state = use_shared_state::<GlobalState>(cx).unwrap();
 
     let toast = use_atom_ref(cx, &crate::TOAST_MANAGER);
 
@@ -197,9 +238,14 @@ fn do_request(
 
         match result {
             Ok(trader_id) => {
+                let aes_key = APP_CTX.get_aes_key().await;
+
+                let session_token = SessionToken::new(trader_id.as_str().to_string());
+                let session_token = session_token.to_string(&aes_key);
+
                 global_state
                     .write()
-                    .set_loading(trader_id, email.to_string());
+                    .set_loading(trader_id, email.to_string(), session_token);
             }
             Err(err) => {
                 request_is_going_on.set(false);

@@ -1,7 +1,15 @@
-use crate::{states::*, APP_CTX};
+use crate::{states::*, types::TraderId, APP_CTX};
 use dioxus::prelude::*;
 use my_nosql_contracts::TradingInstrumentNoSqlEntity;
-pub fn loading_form(cx: Scope) -> Element {
+
+#[derive(Props, PartialEq)]
+pub struct LoadingFormProps {
+    pub trader_id: TraderId,
+    pub email: String,
+    pub session_token: String,
+}
+
+pub fn loading_form<'s>(cx: Scope<'s, LoadingFormProps>) -> Element<'s> {
     let global_state = use_shared_state::<GlobalState>(cx).unwrap();
 
     let global_state_owned = global_state.to_owned();
@@ -14,10 +22,24 @@ pub fn loading_form(cx: Scope) -> Element {
 
     let instruments_state = use_shared_state::<InstrumentsState>(cx).unwrap().to_owned();
 
-    let (trader_id, email) = {
-        let read = global_state.read();
-        (read.get_trader_id().clone(), read.get_email())
+    let js = if cx.props.email.len() > 0 {
+        let mut java_script = format!("localStorage.setItem('email', '{}');", cx.props.email);
+
+        if cx.props.session_token.len() > 0 {
+            java_script.push_str(
+                format!(
+                    "localStorage.setItem('session_id', '{}');",
+                    cx.props.session_token
+                )
+                .as_str(),
+            );
+        }
+        rsx!(script { java_script })
+    } else {
+        rsx!(div {})
     };
+
+    let trader_id = cx.props.trader_id.clone();
 
     cx.spawn(async move {
         let accounts =
@@ -61,7 +83,7 @@ pub fn loading_form(cx: Scope) -> Element {
 
     //todo!("Implement working design")
     render! {
-        table { style: "width:100%; height:1vh;",
+        table { style: "width:100%; height:100vh;",
             tr {
                 td {
                     div { class: "spinner-border", role: "status", span { class: "visually-hidden", "Loading..." } }
@@ -69,6 +91,6 @@ pub fn loading_form(cx: Scope) -> Element {
             }
         }
 
-        script { "localStorage.setItem('email', '{email}')" }
+        js
     }
 }

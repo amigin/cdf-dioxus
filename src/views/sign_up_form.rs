@@ -3,7 +3,10 @@ use dioxus::prelude::*;
 use dioxus_toast::ToastManager;
 use fermi::{use_atom_ref, UseAtomRef};
 
-use crate::{grpc_client::TraderCredentialsGrpcClient, lang::LANG, states::GlobalState};
+use crate::{
+    grpc_client::TraderCredentialsGrpcClient, lang::LANG, session_token::SessionToken,
+    states::GlobalState, APP_CTX,
+};
 
 pub fn sign_up_form(cx: Scope) -> Element {
     let email = use_state(cx, || "".to_string());
@@ -148,7 +151,14 @@ fn do_request(
 
         match result {
             Ok(trader_id) => {
-                global_state.write().set_loading(trader_id, email);
+                let aes_key = APP_CTX.get_aes_key().await;
+
+                let session_token = SessionToken::new(trader_id.as_str().to_string());
+                let session_token = session_token.to_string(&aes_key);
+
+                global_state
+                    .write()
+                    .set_loading(trader_id, email, session_token);
             }
             Err(err) => {
                 err.throw_toast(&LANG.toast_errors.registration_fail, &toast);

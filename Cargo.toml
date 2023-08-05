@@ -28,9 +28,11 @@ fermi = "*"
 futures-util = "*"
 base64 = "*"
 
+
 my-grpc-client-macros = { tag = "0.1.0", git = "https://github.com/MyJetTools/my-grpc-client-macros.git" }
 my-telemetry = { tag = "0.3.0", git = "https://github.com/MyJetTools/my-telemetry.git" }
 my-grpc-extensions = { tag = "0.4.0", git = "https://github.com/MyJetTools/my-grpc-extensions.git" }
+encryption = { tag = "0.1.0", git = "https://github.com/MyJetTools/encryption.git" }
 
 my-settings-reader = { tag = "0.1.5", git = "https://github.com/MyJetTools/my-settings-reader.git", features = [
     "background-reader",

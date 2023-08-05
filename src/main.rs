@@ -10,11 +10,13 @@ use fermi::{use_atom_ref, use_init_atom_root, AtomRef};
 use salvo::affix;
 use salvo::prelude::*;
 use salvo::serve_static::StaticDir;
+
 mod actions;
 mod app;
 mod grpc_client;
 mod http_server;
 mod lang;
+mod session_token;
 mod settings_reader;
 mod states;
 mod static_resources;
@@ -102,10 +104,21 @@ fn app(cx: Scope) -> Element {
             dioxus_toast::ToastFrame { manager: toast }
             sign_up_form {}
         ),
-        GlobalState::Loading { .. } => render! {
-            dioxus_toast::ToastFrame { manager: toast }
-            loading_form {}
-        },
+        GlobalState::Loading {
+            trader_id,
+            email,
+            session_token,
+        } => {
+            render! {
+                dioxus_toast::ToastFrame { manager: toast }
+
+                loading_form {
+                    trader_id: trader_id.clone(),
+                    email: email.to_string(),
+                    session_token: session_token.clone()
+                }
+            }
+        }
         GlobalState::Authenticated { .. } => render! {
             dioxus_toast::ToastFrame { manager: toast }
             main_form {}

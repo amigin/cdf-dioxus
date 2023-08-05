@@ -1,3 +1,4 @@
+use encryption::aes::AesKey;
 use serde::{Deserialize, Serialize};
 
 use crate::grpc_client::*;
@@ -21,12 +22,20 @@ pub struct SettingsModel {
 
     #[serde(rename = "Brand")]
     pub brand: String,
+
+    #[serde(rename = "SessionEncryptionKey")]
+    pub session_encryption_key: String,
 }
 
 impl SettingsReader {
     pub async fn get_brand(&self) -> String {
         let read_access = self.settings.read().await;
         return read_access.brand.clone();
+    }
+
+    pub async fn get_aes_key(&self) -> AesKey {
+        let read_access = self.settings.read().await;
+        return AesKey::new(read_access.session_encryption_key.as_bytes());
     }
 }
 
