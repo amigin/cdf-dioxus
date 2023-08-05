@@ -11,6 +11,7 @@ use crate::views::widgets::*;
 use dioxus::prelude::*;
 
 pub fn main_form(cx: Scope) -> Element {
+    use_shared_state_provider(cx, || MainFormState::new());
     use_shared_state_provider(cx, || BidAskSnapshotState::new());
     use_shared_state_provider(cx, || TradingPanelState::new());
 
