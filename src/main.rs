@@ -31,19 +31,19 @@ lazy_static::lazy_static! {
         Arc::new(AppContext::new())
     };
 }
-
+#[allow(non_snake_case)]
 pub mod trader_credentials_grpc {
     tonic::include_proto!("trader_credentials");
 }
-
+#[allow(non_snake_case)]
 pub mod accounts_manager_grpc {
     tonic::include_proto!("accounts_manager");
 }
-
+#[allow(non_snake_case)]
 pub mod favorite_instruments_flows_grpc {
     tonic::include_proto!("favorite_instruments_flows");
 }
-
+#[allow(non_snake_case)]
 pub mod keyvalue_grpc {
     tonic::include_proto!("keyvalue");
 }
